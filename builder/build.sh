@@ -38,7 +38,7 @@ if [ ! -f "${ROOTFS_TAR_PATH}" ]; then
 fi
 
 # # verify checksum of our root filesystem
-# echo "${ROOTFS_TAR_CHECKSUM} ${ROOTFS_TAR_PATH}" | sha256sum -c -
+echo "${ROOTFS_TAR_CHECKSUM} ${ROOTFS_TAR_PATH}" | sha256sum -c -
 
 # extract root file system
 tar xf "${ROOTFS_TAR_PATH}" -C "${BUILD_PATH}"
