@@ -1,0 +1,22 @@
+sudo: required
+services:
+  - docker
+language: bash
+script:
+  - make shellcheck
+  - VERSION=${TRAVIS_TAG} make sd-image
+branches:
+  only:
+    - master
+    - /^v\d.*$/
+deploy:
+  provider: releases
+  skip_cleanup: true
+  api_key:
+    secure: xxxx
+  file:
+    - hypriotos-rpi64-${TRAVIS_TAG}.img.zip
+    - hypriotos-rpi64-${TRAVIS_TAG}.img.zip.sha256
+  on:
+    tags: true
+    repo: dieterreuter/image-builder-rpi64

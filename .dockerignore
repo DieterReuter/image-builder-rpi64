@@ -1,0 +1,6 @@
+*.img.zip.sha256
+*.img
+*.img.zip
+*.tar.gz
+.vagrant/
+tarballs/
