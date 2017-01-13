@@ -13,7 +13,7 @@ deploy:
   provider: releases
   skip_cleanup: true
   api_key:
-    secure: xxxx
+    secure: XXX
   file:
     - hypriotos-rpi64-${TRAVIS_TAG}.img.zip
     - hypriotos-rpi64-${TRAVIS_TAG}.img.zip.sha256
