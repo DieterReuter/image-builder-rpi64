@@ -192,8 +192,11 @@ apt-get install -y \
   lsb-release
 
 # install hypriot packages for docker-tools
+# apt-get install -y \
+#   "docker-compose:armhf=${DOCKER_COMPOSE_VERSION}" \
+#   "docker-machine:armhf=${DOCKER_MACHINE_VERSION}" \
+#   "device-init:armhf=${DEVICE_INIT_VERSION}"
 apt-get install -y \
-#  "docker-compose:armhf=${DOCKER_COMPOSE_VERSION}" \
   "docker-machine:armhf=${DOCKER_MACHINE_VERSION}" \
   "device-init:armhf=${DEVICE_INIT_VERSION}"
 
