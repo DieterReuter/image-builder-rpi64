@@ -43,9 +43,10 @@ echo "${ROOTFS_TAR_CHECKSUM} ${ROOTFS_TAR_PATH}" | sha256sum -c -
 # extract root file system
 tar xf "${ROOTFS_TAR_PATH}" -C "${BUILD_PATH}"
 
-# extract additional files
-tar xf /workspace/tarballs/bootloader.tar.gz -C "${BUILD_PATH}"
-tar xf /workspace/tarballs/4.9.2-bee42-v8.tar.bz2 -C "${BUILD_PATH}"
+# extract/add additional files
+tar xf /workspace/resources/bootloader.tar.gz -C "${BUILD_PATH}"
+tar xf /workspace/resources/4.9.2-bee42-v8.tar.bz2 -C "${BUILD_PATH}"
+cp /workspace/resources/docker-engine_1.13.0~rc7-0~debian-jessie_arm64.deb "${BUILD_PATH}"/
 
 # register qemu-aarch64 with binfmt
 # to ensure that binaries we use in the chroot

@@ -3,4 +3,4 @@
 *.img.zip
 *.tar.gz
 .vagrant/
-tarballs/
+resources/

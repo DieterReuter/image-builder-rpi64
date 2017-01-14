@@ -94,21 +94,26 @@ export DEST
 mkdir -p "$(dirname "${DEST}")"
 echo "nameserver 8.8.8.8" > "${DEST}"
 
-# # set up hypriot rpi repository for rpi specific kernel- and firmware-packages
-# PACKAGECLOUD_FPR=418A7F2FB0E1E6E7EABF6FE8C2E73424D59097AB
-# PACKAGECLOUD_KEY_URL=https://packagecloud.io/gpg.key
-# get_gpg "${PACKAGECLOUD_FPR}" "${PACKAGECLOUD_KEY_URL}"
+# set up hypriot rpi repository for rpi specific kernel- and firmware-packages
+PACKAGECLOUD_FPR=418A7F2FB0E1E6E7EABF6FE8C2E73424D59097AB
+PACKAGECLOUD_KEY_URL=https://packagecloud.io/gpg.key
+get_gpg "${PACKAGECLOUD_FPR}" "${PACKAGECLOUD_KEY_URL}"
 
+###arm64: not used for now
 # echo 'deb https://packagecloud.io/Hypriot/rpi/debian/ jessie main' > /etc/apt/sources.list.d/hypriot.list
 
-# # set up hypriot schatzkiste repository for generic packages
-# echo 'deb https://packagecloud.io/Hypriot/Schatzkiste/debian/ jessie main' >> /etc/apt/sources.list.d/hypriot.list
+# set up hypriot schatzkiste repository for generic packages
+echo 'deb [arch=armhf] https://packagecloud.io/Hypriot/Schatzkiste/debian/ jessie main' >> /etc/apt/sources.list.d/hypriot.list
 
+RPI_ORG_FPR=CF8A1AF502A2AA2D763BAE7E82B129927FA3303E RPI_ORG_KEY_URL=http://archive.raspberrypi.org/debian/raspberrypi.gpg.key
+get_gpg "${RPI_ORG_FPR}" "${RPI_ORG_KEY_URL}"
 
-# RPI_ORG_FPR=CF8A1AF502A2AA2D763BAE7E82B129927FA3303E RPI_ORG_KEY_URL=http://archive.raspberrypi.org/debian/raspberrypi.gpg.key
-# get_gpg "${RPI_ORG_FPR}" "${RPI_ORG_KEY_URL}"
+echo 'deb [arch=armhf] http://archive.raspberrypi.org/debian/ jessie main' | tee /etc/apt/sources.list.d/raspberrypi.list
 
-# echo 'deb http://archive.raspberrypi.org/debian/ jessie main' | tee /etc/apt/sources.list.d/raspberrypi.list
+# make sure, we can use dedicated armhf packages
+dpkg --add-architecture armhf
+sed -i 's/deb http/deb [arch=arm64] http/g' /etc/apt/sources.list
+sed -i 's/deb-src http/deb-src [arch=arm64] http/g' /etc/apt/sources.list
 
 # reload package sources
 apt-get update
@@ -166,33 +171,41 @@ proc /proc proc defaults 0 0
 apt-get install -y \
   fake-hwclock
 
-# # install packages for managing wireless interfaces
-# apt-get install -y \
-#   wpasupplicant \
-#   wireless-tools \
-#   ethtool \
-#   crda
+# install packages for managing wireless interfaces
+apt-get install -y \
+  wpasupplicant \
+  wireless-tools \
+  ethtool \
+  crda
 
 # # add firmware and packages for managing bluetooth devices
 # apt-get install -y \
 #   --no-install-recommends \
 #   bluetooth \
 #   pi-bluetooth
+apt-get install -y \
+  --no-install-recommends \
+  bluetooth
 
 # ensure compatibility with Docker install.sh, so `raspbian` will be detected correctly
 apt-get install -y \
   lsb-release
 
-# # install hypriot packages for docker-tools
-# apt-get install -y \
-#   "docker-compose=${DOCKER_COMPOSE_VERSION}" \
-#   "docker-machine=${DOCKER_MACHINE_VERSION}" \
-#   "device-init=${DEVICE_INIT_VERSION}"
+# install hypriot packages for docker-tools
+apt-get install -y \
+#  "docker-compose:armhf=${DOCKER_COMPOSE_VERSION}" \
+  "docker-machine:armhf=${DOCKER_MACHINE_VERSION}" \
+  "device-init:armhf=${DEVICE_INIT_VERSION}"
 
 # # set up Docker APT repository and install docker-engine package
 # #TODO: pin package version to ${DOCKER_ENGINE_VERSION}
 # curl -sSL https://get.docker.com | /bin/sh
 
+# install Docker v1.13.0-rc7 from a local file, ignore errors
+dpkg -i /docker-engine_1.13.0~rc7-0~debian-jessie_arm64.deb || /bin/true
+rm -f /docker-engine_1.13.0~rc7-0~debian-jessie_arm64.deb
+# fix missing apt-get install dependencies
+apt-get -f install -y
 
 echo "Installing rpi-serial-console script"
 wget -q https://raw.githubusercontent.com/lurch/rpi-serial-console/master/rpi-serial-console -O usr/local/bin/rpi-serial-console
