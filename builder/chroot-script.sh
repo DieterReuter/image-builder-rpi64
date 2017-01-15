@@ -94,26 +94,26 @@ export DEST
 mkdir -p "$(dirname "${DEST}")"
 echo "nameserver 8.8.8.8" > "${DEST}"
 
-# set up hypriot rpi repository for rpi specific kernel- and firmware-packages
-PACKAGECLOUD_FPR=418A7F2FB0E1E6E7EABF6FE8C2E73424D59097AB
-PACKAGECLOUD_KEY_URL=https://packagecloud.io/gpg.key
-get_gpg "${PACKAGECLOUD_FPR}" "${PACKAGECLOUD_KEY_URL}"
+# # set up hypriot rpi repository for rpi specific kernel- and firmware-packages
+# PACKAGECLOUD_FPR=418A7F2FB0E1E6E7EABF6FE8C2E73424D59097AB
+# PACKAGECLOUD_KEY_URL=https://packagecloud.io/gpg.key
+# get_gpg "${PACKAGECLOUD_FPR}" "${PACKAGECLOUD_KEY_URL}"
 
 ###arm64: not used for now
 # echo 'deb https://packagecloud.io/Hypriot/rpi/debian/ jessie main' > /etc/apt/sources.list.d/hypriot.list
 
-# set up hypriot schatzkiste repository for generic packages
-echo 'deb [arch=armhf] https://packagecloud.io/Hypriot/Schatzkiste/debian/ jessie main' >> /etc/apt/sources.list.d/hypriot.list
+# # set up hypriot schatzkiste repository for generic packages
+# echo 'deb [arch=armhf] https://packagecloud.io/Hypriot/Schatzkiste/debian/ jessie main' >> /etc/apt/sources.list.d/hypriot.list
 
-RPI_ORG_FPR=CF8A1AF502A2AA2D763BAE7E82B129927FA3303E RPI_ORG_KEY_URL=http://archive.raspberrypi.org/debian/raspberrypi.gpg.key
-get_gpg "${RPI_ORG_FPR}" "${RPI_ORG_KEY_URL}"
+# RPI_ORG_FPR=CF8A1AF502A2AA2D763BAE7E82B129927FA3303E RPI_ORG_KEY_URL=http://archive.raspberrypi.org/debian/raspberrypi.gpg.key
+# get_gpg "${RPI_ORG_FPR}" "${RPI_ORG_KEY_URL}"
 
-echo 'deb [arch=armhf] http://archive.raspberrypi.org/debian/ jessie main' | tee /etc/apt/sources.list.d/raspberrypi.list
+# echo 'deb [arch=armhf] http://archive.raspberrypi.org/debian/ jessie main' | tee /etc/apt/sources.list.d/raspberrypi.list
 
-# make sure, we can use dedicated armhf packages
-dpkg --add-architecture armhf
-sed -i 's/deb http/deb [arch=arm64] http/g' /etc/apt/sources.list
-sed -i 's/deb-src http/deb-src [arch=arm64] http/g' /etc/apt/sources.list
+# # make sure, we can use dedicated armhf packages
+# dpkg --add-architecture armhf
+# sed -i 's/deb http/deb [arch=arm64] http/g' /etc/apt/sources.list
+# sed -i 's/deb-src http/deb-src [arch=arm64] http/g' /etc/apt/sources.list
 
 # reload package sources
 apt-get update
@@ -191,14 +191,19 @@ apt-get install -y \
 apt-get install -y \
   lsb-release
 
-# install hypriot packages for docker-tools
-# apt-get install -y \
-#   "docker-compose:armhf=${DOCKER_COMPOSE_VERSION}" \
-#   "docker-machine:armhf=${DOCKER_MACHINE_VERSION}" \
-#   "device-init:armhf=${DEVICE_INIT_VERSION}"
-apt-get install -y \
-  "docker-machine:armhf=${DOCKER_MACHINE_VERSION}" \
-  "device-init:armhf=${DEVICE_INIT_VERSION}"
+# install Device Init directly from GitHub releases
+curl -sSL https://github.com/hypriot/device-init/releases/download/v$DEVICE_INIT_VERSION/device-init_linux_arm \
+  > /usr/local/bin/device-init
+chmod +x /usr/local/bin/device-init
+
+# install Docker Machine directly from GitHub releases
+curl -sSL https://github.com/docker/machine/releases/download/v$DOCKER_MACHINE_VERSION/docker-machine-Linux-armhf \
+  > /usr/local/bin/docker-machine
+chmod +x /usr/local/bin/docker-machine
+
+# install Docker Compose via pip
+curl -sSL https://bootstrap.pypa.io/get-pip.py | python
+pip install docker-compose
 
 # # set up Docker APT repository and install docker-engine package
 # #TODO: pin package version to ${DOCKER_ENGINE_VERSION}
