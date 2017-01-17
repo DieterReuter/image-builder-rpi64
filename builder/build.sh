@@ -44,9 +44,12 @@ echo "${ROOTFS_TAR_CHECKSUM} ${ROOTFS_TAR_PATH}" | sha256sum -c -
 tar xf "${ROOTFS_TAR_PATH}" -C "${BUILD_PATH}"
 
 # extract/add additional files
-tar xf /workspace/resources/bootloader.tar.gz -C "${BUILD_PATH}"
-tar xf /workspace/resources/4.9.2-bee42-v8.tar.bz2 -C "${BUILD_PATH}"
-cp /workspace/resources/docker-engine_1.13.0~rc7-0~debian-jessie_arm64.deb "${BUILD_PATH}"/
+curl -sSL https://github.com/DieterReuter/rpi-bootloader/releases/download/v$BOOTLOADER_BUILD/rpi-bootloader.tar.gz | tar -xf --C "${BUILD_PATH}"
+curl -sSL https://github.com/DieterReuter/rpi64-kernel/releases/download/v$KERNEL_BUILD/$KERNEL_VERSION-bee42-v8.tar.gz | tar -xf - -C "${BUILD_PATH}"
+DOCKER_DEB="/workspace/resources/docker-engine_1.13.0~rc7-0~debian-jessie_arm64.deb"
+if [ -f "$DOCKER_DEB" ]; then
+  cp $DOCKER_DEB "${BUILD_PATH}"/
+fi
 
 # register qemu-aarch64 with binfmt
 # to ensure that binaries we use in the chroot

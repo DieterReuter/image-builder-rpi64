@@ -210,8 +210,10 @@ pip install docker-compose
 # curl -sSL https://get.docker.com | /bin/sh
 
 # install Docker v1.13.0-rc7 from a local file, ignore errors
-dpkg -i /docker-engine_1.13.0~rc7-0~debian-jessie_arm64.deb || /bin/true
-rm -f /docker-engine_1.13.0~rc7-0~debian-jessie_arm64.deb
+DOCKER_DEB="/docker-engine_1.13.0~rc7-0~debian-jessie_arm64.deb"
+if [ -f "$DOCKER_DEB" ]; then
+dpkg -i $DOCKER_DEB || /bin/true
+rm -f $DOCKER_DEB
 # fix missing apt-get install dependencies
 apt-get -f install -y
 
