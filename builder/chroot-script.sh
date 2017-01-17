@@ -212,10 +212,12 @@ pip install docker-compose
 # install Docker v1.13.0-rc7 from a local file, ignore errors
 DOCKER_DEB="/docker-engine_1.13.0~rc7-0~debian-jessie_arm64.deb"
 if [ -f "$DOCKER_DEB" ]; then
-dpkg -i $DOCKER_DEB || /bin/true
-rm -f $DOCKER_DEB
-# fix missing apt-get install dependencies
-apt-get -f install -y
+  dpkg -i $DOCKER_DEB || /bin/true
+  rm -f $DOCKER_DEB
+
+  # fix missing apt-get install dependencies
+  apt-get -f install -y
+fi
 
 echo "Installing rpi-serial-console script"
 wget -q https://raw.githubusercontent.com/lurch/rpi-serial-console/master/rpi-serial-console -O usr/local/bin/rpi-serial-console
