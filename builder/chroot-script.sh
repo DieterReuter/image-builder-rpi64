@@ -192,12 +192,12 @@ apt-get install -y \
   lsb-release
 
 # install Device Init directly from GitHub releases
-curl -sSL https://github.com/hypriot/device-init/releases/download/v$DEVICE_INIT_VERSION/device-init_linux_arm \
+curl -sSL "https://github.com/hypriot/device-init/releases/download/v$DEVICE_INIT_VERSION/device-init_linux_arm" \
   > /usr/local/bin/device-init
 chmod +x /usr/local/bin/device-init
 
 # install Docker Machine directly from GitHub releases
-curl -sSL https://github.com/docker/machine/releases/download/v$DOCKER_MACHINE_VERSION/docker-machine-Linux-armhf \
+curl -sSL "https://github.com/docker/machine/releases/download/v$DOCKER_MACHINE_VERSION/docker-machine-Linux-armhf" \
   > /usr/local/bin/docker-machine
 chmod +x /usr/local/bin/docker-machine
 
