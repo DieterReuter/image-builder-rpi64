@@ -37,15 +37,25 @@ if [ ! -f "${ROOTFS_TAR_PATH}" ]; then
   wget -q -O "${ROOTFS_TAR_PATH}" "https://github.com/hypriot/os-rootfs/releases/download/${HYPRIOT_OS_VERSION}/${ROOTFS_TAR}"
 fi
 
-# # verify checksum of our root filesystem
+# verify checksum of our root filesystem
 echo "${ROOTFS_TAR_CHECKSUM} ${ROOTFS_TAR_PATH}" | sha256sum -c -
 
 # extract root file system
 tar xf "${ROOTFS_TAR_PATH}" -C "${BUILD_PATH}"
 
 # extract/add additional files
-wget -q -O - "https://github.com/DieterReuter/rpi-bootloader/releases/download/v$BOOTLOADER_BUILD/rpi-bootloader.tar.gz" | tar -xf - -C "${BUILD_PATH}"
-wget -q -O - "https://github.com/DieterReuter/rpi64-kernel/releases/download/v$KERNEL_BUILD/$KERNEL_VERSION-bee42-v8.tar.gz" | tar -xf - -C "${BUILD_PATH}"
+FILENAME=/workspace/rpi-bootloader.tar.gz
+if [ ! -f "$FILENAME" ]; then
+  fetch --repo="https://github.com/DieterReuter/rpi-bootloader" --tag="v$BOOTLOADER_BUILD" --release-asset="rpi-bootloader.tar.gz.sha256" /workspace
+  fetch --repo="https://github.com/DieterReuter/rpi-bootloader" --tag="v$BOOTLOADER_BUILD" --release-asset="rpi-bootloader.tar.gz" /workspace
+fi
+tar -xf "$FILENAME" -C "${BUILD_PATH}"
+FILENAME=/workspace/$KERNEL_VERSION-bee42-v8.tar.gz
+if [ ! -f "$FILENAME" ]; then
+  fetch --repo="https://github.com/DieterReuter/rpi64-kernel" --tag="v$KERNEL_BUILD" --release-asset="$KERNEL_VERSION-bee42-v8.tar.gz.sha256" /workspace
+  fetch --repo="https://github.com/DieterReuter/rpi64-kernel" --tag="v$KERNEL_BUILD" --release-asset="$KERNEL_VERSION-bee42-v8.tar.gz" /workspace
+fi
+tar -xf "$FILENAME" -C "${BUILD_PATH}"
 DOCKER_DEB="/workspace/resources/docker-engine_1.13.0~rc7-0~debian-jessie_arm64.deb"
 if [ -f "$DOCKER_DEB" ]; then
   cp $DOCKER_DEB "${BUILD_PATH}"/

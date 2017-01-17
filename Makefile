@@ -4,10 +4,10 @@ build:
 	docker build -t image-builder-rpi64 .
 
 sd-image: build
-	docker run --rm --privileged -v $(shell pwd):/workspace -v /boot:/boot -v /lib/modules:/lib/modules -e TRAVIS_TAG -e VERSION image-builder-rpi64
+	docker run --rm --privileged -v $(shell pwd):/workspace -v /boot:/boot -v /lib/modules:/lib/modules -e TRAVIS_TAG -e VERSION -e "GITHUB_OAUTH_TOKEN=${GITHUB_TOKEN}" image-builder-rpi64
 
 shell: build
-	docker run -ti --privileged -v $(shell pwd):/workspace -v /boot:/boot -v /lib/modules:/lib/modules -e TRAVIS_TAG -e VERSION image-builder-rpi64 bash
+	docker run -ti --privileged -v $(shell pwd):/workspace -v /boot:/boot -v /lib/modules:/lib/modules -e TRAVIS_TAG -e VERSION -e "GITHUB_OAUTH_TOKEN=${GITHUB_TOKEN}" image-builder-rpi64 bash
 
 test:
 	VERSION=dirty docker run --rm -ti --privileged -v $(shell pwd):/workspace -v /boot:/boot -v /lib/modules:/lib/modules -e TRAVIS_TAG -e VERSION image-builder-rpi64 bash -c "unzip /workspace/hypriotos-rpi-dirty.img.zip && rspec --format documentation --color /workspace/builder/test/*_spec.rb"
