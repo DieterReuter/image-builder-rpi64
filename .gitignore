@@ -1,6 +1,7 @@
-*.img.zip.sha256
 *.img
 *.img.zip
+*.img.zip.sha256
 *.tar.gz
+*.tar.gz.sha256
 .vagrant/
 resources/
