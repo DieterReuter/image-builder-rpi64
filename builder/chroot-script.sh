@@ -209,8 +209,8 @@ pip install docker-compose
 # #TODO: pin package version to ${DOCKER_ENGINE_VERSION}
 # curl -sSL https://get.docker.com | /bin/sh
 
-# install Docker v1.13.0-rc7 from a local file, ignore errors
-DOCKER_DEB="/docker-engine_1.13.0~rc7-0~debian-jessie_arm64.deb"
+# install Docker v1.13.0 from a local file, ignore errors
+DOCKER_DEB="/docker-engine_1.13.0-0~debian-jessie_arm64.deb"
 if [ -f "$DOCKER_DEB" ]; then
   dpkg -i $DOCKER_DEB || /bin/true
   rm -f $DOCKER_DEB
