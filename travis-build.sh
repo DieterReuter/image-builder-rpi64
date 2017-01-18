@@ -28,7 +28,7 @@ BUILD_DEST=builds/$BUILD_NR
 mkdir -p $BUILD_DEST
 #-build
 ###make shellcheck
-VERSION=${TRAVIS_TAG} make sd-image
+VERSION=v$BUILD_NR make sd-image
 #-move artifacts to build dest
 mv hypriotos-rpi64* $BUILD_DEST/
 
