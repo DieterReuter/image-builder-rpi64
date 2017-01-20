@@ -156,6 +156,11 @@ enable_uart=1
 # gpu_mem=128
 # " >> boot/config.txt
 
+echo "# setting for maximum memory, gpu_mem to minimum 16M, camera off
+start_x=0
+gpu_mem=16
+" >> boot/config.txt
+
 # # /etc/modules
 # echo "snd_bcm2835
 # " >> /etc/modules
