@@ -146,8 +146,9 @@ echo "+dwc_otg.lpm_enable=0 console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 cgr
 
 # create a default boot/config.txt file (details see http://elinux.org/RPiconfig)
 echo "
-hdmi_force_hotplug=1
+# enable UART console on GPIO pins
 enable_uart=1
+hdmi_force_hotplug=1
 " > boot/config.txt
 
 # echo "# camera settings, see http://elinux.org/RPiconfig#Camera
@@ -214,11 +215,13 @@ pip install docker-compose
 # #TODO: pin package version to ${DOCKER_ENGINE_VERSION}
 # curl -sSL https://get.docker.com | /bin/sh
 
-# install Docker v1.13.0 from a local file, ignore errors
-DOCKER_DEB="/docker-engine_1.13.0-0~debian-jessie_arm64.deb"
-if [ -f "$DOCKER_DEB" ]; then
-  dpkg -i $DOCKER_DEB || /bin/true
-  rm -f $DOCKER_DEB
+# install Docker Engine directly from GitHub releases
+DOCKER_DEB="docker-engine_${DOCKER_ENGINE_VERSION}-0~debian-jessie_arm64.deb"
+curl -sSL "https://github.com/DieterReuter/docker-armbuilds/releases/download/v${DOCKER_ENGINE_VERSION}/$DOCKER_DEB" \
+  > "/$DOCKER_DEB"
+if [ -f "/$DOCKER_DEB" ]; then
+  dpkg -i "/$DOCKER_DEB" || /bin/true
+  rm -f "/$DOCKER_DEB"
 
   # fix missing apt-get install dependencies
   apt-get -f install -y

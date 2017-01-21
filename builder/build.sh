@@ -56,10 +56,6 @@ if [ ! -f "$FILENAME" ]; then
   fetch --repo="https://github.com/DieterReuter/rpi64-kernel" --tag="v$KERNEL_BUILD" --release-asset="$KERNEL_VERSION-bee42-v8.tar.gz" /workspace
 fi
 tar -xf "$FILENAME" -C "${BUILD_PATH}"
-DOCKER_DEB="/workspace/resources/docker-engine_1.13.0-0~debian-jessie_arm64.deb"
-if [ -f "$DOCKER_DEB" ]; then
-  cp $DOCKER_DEB "${BUILD_PATH}"/
-fi
 
 # register qemu-aarch64 with binfmt
 # to ensure that binaries we use in the chroot
