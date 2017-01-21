@@ -216,7 +216,7 @@ pip install docker-compose
 # curl -sSL https://get.docker.com | /bin/sh
 
 # install Docker Engine directly from GitHub releases
-DOCKER_DEB="docker-engine_${DOCKER_ENGINE_VERSION}-0~debian-jessie_arm64.deb"
+DOCKER_DEB="docker-engine_${DOCKER_ENGINE_VERSION}-0.debian-jessie_arm64.deb"
 curl -sSL "https://github.com/DieterReuter/docker-armbuilds/releases/download/v${DOCKER_ENGINE_VERSION}/$DOCKER_DEB" \
   > "/$DOCKER_DEB"
 if [ -f "/$DOCKER_DEB" ]; then
