@@ -217,10 +217,10 @@ pip install docker-compose
 
 # enable Docker Engine experimental features
 mkdir -p /etc/docker/
-echo "{
+echo '{
   "experimental": true
 }
-" > /etc/docker/daemon.json
+' > /etc/docker/daemon.json
 
 # install Docker Engine directly from GitHub releases
 DOCKER_DEB="docker-engine_${DOCKER_ENGINE_VERSION}-0.debian-jessie_arm64.deb"
