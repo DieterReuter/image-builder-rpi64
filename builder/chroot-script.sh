@@ -215,6 +215,13 @@ pip install docker-compose
 # #TODO: pin package version to ${DOCKER_ENGINE_VERSION}
 # curl -sSL https://get.docker.com | /bin/sh
 
+# enable Docker Engine experimental features
+mkdir -p /etc/docker/
+echo "{
+  "experimental": true
+}
+" > /etc/docker/daemon.json
+
 # install Docker Engine directly from GitHub releases
 DOCKER_DEB="docker-engine_${DOCKER_ENGINE_VERSION}-0.debian-jessie_arm64.deb"
 curl -sSL "https://github.com/DieterReuter/docker-armbuilds/releases/download/v${DOCKER_ENGINE_VERSION}/$DOCKER_DEB" \
