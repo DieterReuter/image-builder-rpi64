@@ -1,6 +1,5 @@
 #!/bin/bash
 set -e
-set -x
 
 # This script is meant to run on Travis-CI only
 if [ -z "$TRAVIS_BRANCH" ]; then 
@@ -17,6 +16,9 @@ if [ -z "$GITHUB_OAUTH_TOKEN" ]; then
   echo "ABORTING: env GITHUB_OAUTH_TOKEN is missing"
   exit 1
 fi
+
+# verbose logging
+set -x
 
 # create a build number
 export BUILD_NR="$(date '+%Y%m%d-%H%M%S')"
