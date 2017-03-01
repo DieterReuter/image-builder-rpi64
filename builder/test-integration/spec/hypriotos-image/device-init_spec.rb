@@ -1,14 +1,14 @@
 require 'spec_helper'
 
-describe package('device-init') do
-  it { should be_installed }
-end
+# describe package('device-init') do
+#   it { should be_installed }
+# end
 
-describe command('dpkg -l device-init') do
-  its(:stdout) { should match /ii  device-init/ }
-  its(:stdout) { should match /0.1.8/ }
-  its(:exit_status) { should eq 0 }
-end
+# describe command('dpkg -l device-init') do
+#   its(:stdout) { should match /ii  device-init/ }
+#   its(:stdout) { should match /0.1.8/ }
+#   its(:exit_status) { should eq 0 }
+# end
 
 describe file('/boot/device-init.yaml') do
   it { should be_file }
