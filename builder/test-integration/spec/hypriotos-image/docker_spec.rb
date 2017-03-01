@@ -47,13 +47,6 @@ describe file('/lib/systemd/system/docker.socket') do
   it { should be_owned_by 'root' }
 end
 
-describe file('/etc/systemd/system/docker.service.d/overlay.conf') do
-  it { should be_file }
-  it { should be_mode 644 }
-  it { should be_owned_by 'root' }
-  its(:content) { should match /ExecStart=\/usr\/bin\/dockerd --storage-driver overlay -H fd:\/\// }
-end
-
 describe file('/var/run/docker.sock') do
   it { should be_socket }
   it { should be_mode 660 }
@@ -73,7 +66,7 @@ describe file('/var/lib/docker') do
   it { should be_owned_by 'root' }
 end
 
-describe file('/var/lib/docker/overlay') do
+describe file('/var/lib/docker/overlay2') do
   it { should be_directory }
   it { should be_mode 700 }
   it { should be_owned_by 'root' }
@@ -87,18 +80,18 @@ describe file('/etc/bash_completion.d/docker') do
 end
 
 describe command('docker -v') do
-  its(:stdout) { should match /Docker version 1.12.5, build/ }
+  its(:stdout) { should match /Docker version 1.13.1, build/ }
   its(:exit_status) { should eq 0 }
 end
 
 describe command('docker version') do
-  its(:stdout) { should match /Client:. Version:      1.12.5. API version:  1.24/m }
-  its(:stdout) { should match /Server:. Version:      1.12.5. API version:  1.24/m }
+  its(:stdout) { should match /Client:. Version:      1.13.1. API version:  1.26/m }
+  its(:stdout) { should match /Server:. Version:      1.13.1. API version:  1.26/m }
   its(:exit_status) { should eq 0 }
 end
 
 describe command('docker info') do
-  its(:stdout) { should match /Storage Driver: overlay/ }
+  its(:stdout) { should match /Storage Driver: overlay2/ }
   its(:exit_status) { should eq 0 }
 end
 
