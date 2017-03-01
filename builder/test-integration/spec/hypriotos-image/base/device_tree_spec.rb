@@ -12,10 +12,5 @@ describe file('/proc/device-tree/model') do
   it { should be_file }
   it { should be_mode 444 }
   it { should be_owned_by 'root' }
-  its(:content) { should match /Raspberry Pi/ }
-end
-
-describe command('vcdbg log msg') do
-  its(:stderr) { should match /Loading 'bcm.*\.dtb' to/ }
-  its(:exit_status) { should eq 0 }
+  its(:content) { should match /Raspberry Pi 3 Model B/ }
 end
