@@ -203,7 +203,7 @@ curl -sSL "https://github.com/hypriot/device-init/releases/download/v$DEVICE_INI
 chmod +x /usr/local/bin/device-init
 
 # install Docker Machine directly from GitHub releases
-curl -sSL "https://github.com/docker/machine/releases/download/v$DOCKER_MACHINE_VERSION/docker-machine-Linux-armhf" \
+curl -sSL "https://github.com/docker/machine/releases/download/v$DOCKER_MACHINE_VERSION/docker-machine-Linux-aarch64" \
   > /usr/local/bin/docker-machine
 chmod +x /usr/local/bin/docker-machine
 
