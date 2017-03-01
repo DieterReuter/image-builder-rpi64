@@ -2,17 +2,17 @@ Specinfra::Runner.run_command('modprobe configs')
 
 describe command('zcat /proc/config.gz') do
   its(:stdout) { should match /CONFIG_KPROBES=y/ }
-  its(:stdout) { should match /CONFIG_UPROBES=y/ }
+  #its(:stdout) { should match /CONFIG_UPROBES=y/ }
   its(:stdout) { should match /CONFIG_HAVE_KPROBES=y/ }
   its(:stdout) { should match /CONFIG_EVENT_TRACING=y/ }
-  its(:stdout) { should match /CONFIG_KPROBE_EVENT=y/ }
-  its(:stdout) { should match /CONFIG_UPROBE_EVENT=y/ }
-  its(:stdout) { should match /CONFIG_PROBE_EVENTS=y/ }
+  #its(:stdout) { should match /CONFIG_KPROBE_EVENT=y/ }
+  #its(:stdout) { should match /CONFIG_UPROBE_EVENT=y/ }
+  #its(:stdout) { should match /CONFIG_PROBE_EVENTS=y/ }
   its(:stdout) { should match /CONFIG_FTRACE=y/ }
-  its(:stdout) { should match /CONFIG_FTRACE_SYSCALLS=y/ }
+  #its(:stdout) { should match /CONFIG_FTRACE_SYSCALLS=y/ }
   its(:stdout) { should match /CONFIG_DYNAMIC_FTRACE=y/ }
   its(:stdout) { should match /CONFIG_HAVE_DYNAMIC_FTRACE=y/ }
-  its(:stdout) { should match /CONFIG_BCM2708_VCHIQ=y/ }
+  #its(:stdout) { should match /CONFIG_BCM2708_VCHIQ=y/ }
   its(:stdout) { should match /CONFIG_HW_RANDOM_BCM2835=y/ }
   # Docker specific kernel settings (see https://github.com/docker/docker/blob/master/contrib/check-config.sh)
   ## Generally Necessary:
@@ -21,7 +21,7 @@ describe command('zcat /proc/config.gz') do
   its(:stdout) { should match /CONFIG_PID_NS=y/ }
   its(:stdout) { should match /CONFIG_IPC_NS=y/ }
   its(:stdout) { should match /CONFIG_UTS_NS=y/ }
-  its(:stdout) { should match /CONFIG_DEVPTS_MULTIPLE_INSTANCES=y/ }
+  #its(:stdout) { should match /CONFIG_DEVPTS_MULTIPLE_INSTANCES=y/ }
   its(:stdout) { should match /CONFIG_CGROUPS=y/ }
   its(:stdout) { should match /CONFIG_CGROUP_CPUACCT=y/ }
   its(:stdout) { should match /CONFIG_CGROUP_DEVICE=y/ }
@@ -47,7 +47,7 @@ describe command('zcat /proc/config.gz') do
   its(:stdout) { should match /CONFIG_CGROUP_PIDS=y/ }
   its(:stdout) { should match /CONFIG_MEMCG_SWAP=y/ }
   its(:stdout) { should match /CONFIG_MEMCG_SWAP_ENABLED=y/ }
-  its(:stdout) { should match /CONFIG_MEMCG_KMEM=y/ }
+  #its(:stdout) { should match /CONFIG_MEMCG_KMEM=y/ }
   its(:stdout) { should match /CONFIG_BLK_CGROUP=y/ }
   its(:stdout) { should match /CONFIG_BLK_DEV_THROTTLING=y/ }
   its(:stdout) { should match /CONFIG_IOSCHED_CFQ=y/ }
@@ -60,10 +60,10 @@ describe command('zcat /proc/config.gz') do
   its(:stdout) { should match /CONFIG_FAIR_GROUP_SCHED=y/ }
   its(:stdout) { should match /CONFIG_RT_GROUP_SCHED=y/ }
   its(:stdout) { should match /CONFIG_IP_VS=m/ }
-  its(:stdout) { should match /CONFIG_EXT3_FS=y/ }
+  #its(:stdout) { should match /CONFIG_EXT3_FS=y/ }
   #its(:stdout) { should match /CONFIG_EXT3_FS_XATTR=y/ }
-  its(:stdout) { should match /CONFIG_EXT3_FS_POSIX_ACL=y/ }
-  its(:stdout) { should match /CONFIG_EXT3_FS_SECURITY=y/ }
+  #its(:stdout) { should match /CONFIG_EXT3_FS_POSIX_ACL=y/ }
+  #its(:stdout) { should match /CONFIG_EXT3_FS_SECURITY=y/ }
   its(:stdout) { should match /CONFIG_EXT4_FS=y/ }
   its(:stdout) { should match /CONFIG_EXT4_FS_POSIX_ACL=y/ }
   its(:stdout) { should match /CONFIG_EXT4_FS_SECURITY=y/ }
