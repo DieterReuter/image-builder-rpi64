@@ -1,5 +1,5 @@
 # image-builder-rpi64
-[![Build Status](https://travis-ci.com/DieterReuter/image-builder-rpi64.svg?token=ExPqNxiRaVAPsjieDH9T&branch=master)](https://travis-ci.com/DieterReuter/image-builder-rpi64)
+[![Build Status](https://travis-ci.org/DieterReuter/image-builder-rpi64.svg?branch=master)](https://travis-ci.org/DieterReuter/image-builder-rpi64)
 
 This repo builds the SD card image with HypriotOS for the Raspberry Pi 3 in 64bit.
 You can find released versions of the SD card image here in the GitHub
