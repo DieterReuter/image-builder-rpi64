@@ -32,7 +32,7 @@ users:
     primary-group: users
     shell: /bin/bash
     sudo: ALL=(ALL) NOPASSWD:ALL
-    groups: users,docker,adm,dialout,audio,plugdev,netdev,video,spi,i2c,gpio
+    groups: users,docker,adm,dialout,audio,plugdev,netdev,video
     ssh-import-id: None
     lock_passwd: true
     ssh-authorized-keys:
