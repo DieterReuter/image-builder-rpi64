@@ -242,7 +242,6 @@ chmod +x usr/local/bin/rpi-serial-console
 
 # remove default user pirate
 deluser --remove-home pirate
-delgroup pirate
 
 # cleanup APT cache and lists
 apt-get clean
