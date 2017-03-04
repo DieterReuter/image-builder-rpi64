@@ -15,6 +15,69 @@ Here is an example how all the GitHub repos play together:
 
 ![Architecture](http://blog.hypriot.com/images/hypriotos-xxx/hypriotos_buildpipeline.jpg)
 
+## Flash
+
+Before you flash, prepare your cloud-init config files.
+
+### user-data
+
+The file `user-data` can configure the hostname, add users, SSH keys etc. See [Cloud config examples](http://cloudinit.readthedocs.io/en/latest/topics/examples.html) for some more use cases.
+
+```
+#cloud-config
+hostname: black-pearl
+manage_etc_hosts: true
+users:
+  - name: pirate
+    primary-group: users
+    shell: /bin/bash
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: users,docker,adm,dialout,audio,plugdev,netdev,video,spi,i2c,gpio
+    ssh-import-id: None
+    lock_passwd: true
+    ssh-authorized-keys:
+      - ssh-rsa AAAA...NN
+write_files:
+-   content: |
+        {
+          "labels": [ "os=linux", "arch=arm64" ],
+          "experimental": true
+        }
+    owner: root:root
+    path: /etc/docker/daemon.json
+runcmd:
+ - [ systemctl, restart, avahi-daemon ]
+ - [ systemctl, restart, docker ]
+```
+
+### meta-data
+
+The file `meta-data` is not used right now and may be empty.
+
+```
+```
+
+### Run flash script
+
+Now get the latest version of the [flash script](https://github.com/hypriot/flash) to support the new cloud-init options.
+
+Flash one of the released SD card images with
+
+```bash
+flash -u ./user-data -m ./meta-data https://github.com/sealsystems/image-builder-rpi64/releases/download/v1.4.0/hypriotos-rpi64-v1.4.0.img.zip
+```
+
+## Run integration tests
+
+Now flash the SD card image and boot up a Raspberry Pi. Run the [Serverspec](http://serverspec.org) integration tests in `builder/test-integration/`
+folder against your Raspberry Pi. Set the environment variable `BOARD` to the
+IP address or host name of your running Raspberry Pi.
+
+```bash
+flash hypriotos-rpi-dirty.img.zip
+BOARD=black-pearl.local make test-integration
+```
+
 ## Contributing
 
 You can contribute to this repo by forking it and sending us pull requests.

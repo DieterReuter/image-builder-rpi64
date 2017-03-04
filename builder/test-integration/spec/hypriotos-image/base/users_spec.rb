@@ -29,10 +29,11 @@ describe file('/etc/sudoers.d') do
 end
 
 describe file('/etc/sudoers.d/user-pirate') do
-  it { should be_file }
-  it { should be_mode 440 }
-  it { should be_owned_by 'root' }
-  its(:content) { should match /pirate ALL=NOPASSWD: ALL/ }
+  it { should_not be_file }
+end
+
+describe file('/etc/sudoers.d/010_pi-nopasswd') do
+  it { should_not be_file }
 end
 
 describe file('/root/.bashrc') do
@@ -46,13 +47,6 @@ describe file('/root/.bash_prompt') do
   it { should be_owned_by 'root' }
 end
 
-describe file('/home/pirate/.bashrc') do
-  it { should be_file }
-  it { should be_mode 644 }
-  it { should be_owned_by 'pirate' }
-end
-describe file('/home/pirate/.bash_prompt') do
-  it { should be_file }
-  it { should be_mode 644 }
-  it { should be_owned_by 'pirate' }
+describe file('/home/pirate') do
+  it { should_not be_directory }
 end
