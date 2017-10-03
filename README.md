@@ -88,3 +88,4 @@ changes and links to resolved issues.
 ## License
 
 MIT - see the [LICENSE](./LICENSE) file for details.
+
