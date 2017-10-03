@@ -135,8 +135,9 @@ apt-get upgrade -y
 #   "libraspberrypi-dev=${KERNEL_BUILD}" \
 #   "libraspberrypi-bin=${KERNEL_BUILD}"
 
-# add user pirate to group video (for using the Raspberry Pi camera)
-usermod -a -G video pirate
+# remove sudoers files
+rm -f etc/sudoers.d/010_pi-nopasswd
+rm -f etc/sudoers.d/user-pirate
 
 # enable serial console
 printf "# Spawn a getty on Raspberry Pi serial line\nT0:23:respawn:/sbin/getty -L ttyAMA0 115200 vt100\n" >> /etc/inittab
@@ -197,11 +198,6 @@ apt-get install -y \
 apt-get install -y \
   lsb-release
 
-# install Device Init directly from GitHub releases
-curl -sSL "https://github.com/hypriot/device-init/releases/download/v$DEVICE_INIT_VERSION/device-init_linux_arm" \
-  > /usr/local/bin/device-init
-chmod +x /usr/local/bin/device-init
-
 # install Docker Machine directly from GitHub releases
 curl -sSL "https://github.com/docker/machine/releases/download/v$DOCKER_MACHINE_VERSION/docker-machine-Linux-aarch64" \
   > /usr/local/bin/docker-machine
@@ -210,6 +206,12 @@ chmod +x /usr/local/bin/docker-machine
 # install Docker Compose via pip
 curl -sSL https://bootstrap.pypa.io/get-pip.py | python
 pip install docker-compose
+
+# install cloud-init
+apt-get install -y cloud-init
+mkdir -p /var/lib/cloud/seed/nocloud-net
+ln -s /boot/user-data /var/lib/cloud/seed/nocloud-net/user-data
+ln -s /boot/meta-data /var/lib/cloud/seed/nocloud-net/meta-data
 
 # # set up Docker APT repository and install docker-engine package
 # #TODO: pin package version to ${DOCKER_ENGINE_VERSION}
@@ -237,6 +239,9 @@ fi
 echo "Installing rpi-serial-console script"
 wget -q https://raw.githubusercontent.com/lurch/rpi-serial-console/master/rpi-serial-console -O usr/local/bin/rpi-serial-console
 chmod +x usr/local/bin/rpi-serial-console
+
+# remove default user pirate
+deluser --remove-home pirate
 
 # cleanup APT cache and lists
 apt-get clean
