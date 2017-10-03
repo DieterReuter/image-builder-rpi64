@@ -209,7 +209,7 @@ chmod +x /usr/local/bin/docker-machine
 
 # install Docker Compose via pip
 curl -sSL https://bootstrap.pypa.io/get-pip.py | python
-pip install docker-compose
+pip install docker-compose==${DOCKER_COMPOSE_VERSION}
 
 # # set up Docker APT repository and install docker-engine package
 # #TODO: pin package version to ${DOCKER_ENGINE_VERSION}
