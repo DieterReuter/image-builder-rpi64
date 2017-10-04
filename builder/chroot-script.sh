@@ -238,9 +238,30 @@ echo "Installing rpi-serial-console script"
 wget -q https://raw.githubusercontent.com/lurch/rpi-serial-console/master/rpi-serial-console -O usr/local/bin/rpi-serial-console
 chmod +x usr/local/bin/rpi-serial-console
 
+#TODO:+++ remove as soon as we do have a Debian Stretch os-rootfs image
+# upgrade to Debian Stretch
+# see: https://linuxconfig.org/how-to-upgrade-debian-8-jessie-to-debian-9-stretch
+apt-get dist-upgrade -y
+sed -i 's/jessie/stretch/g' /etc/apt/sources.list
+apt-get update
+DEBIAN_FRONTEND=noninteractive DEBIAN_PRIORITY=critical apt-get -q -y -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" upgrade
+DEBIAN_FRONTEND=noninteractive DEBIAN_PRIORITY=critical apt-get -q -y -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" dist-upgrade
+sed -i 's/Linux 8/Linux 9/g' /etc/issue
+sed -i 's/Linux 8/Linux 9/g' /etc/issue.net
+sed -i 's/Linux 8/Linux 9/g' /etc/motd
+#TODO:---
+
 # cleanup APT cache and lists
 apt-get clean
 rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+#TODO:+++ remove as soon as we do have a Debian Stretch os-rootfs image
+# set HypriotOS version infos
+BUILD_ARCH="${BUILD_ARCH:-arm64}"
+HYPRIOT_OS_VERSION="${HYPRIOT_OS_VERSION:-v1.1.1}"
+echo "HYPRIOT_OS=\"HypriotOS/${BUILD_ARCH}\"" >> /etc/os-release
+echo "HYPRIOT_OS_VERSION=\"${HYPRIOT_OS_VERSION}\"" >> /etc/os-release
+#TODO:---
 
 # set device label and version number
 echo "HYPRIOT_DEVICE=\"$HYPRIOT_DEVICE\"" >> /etc/os-release
