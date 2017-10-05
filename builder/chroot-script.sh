@@ -223,17 +223,7 @@ echo '{
 }
 ' > /etc/docker/daemon.json
 
-# install Docker Engine directly from GitHub releases
-DOCKER_DEB="docker-engine_${DOCKER_ENGINE_VERSION}-0.debian-jessie_arm64.deb"
-curl -sSL "https://github.com/DieterReuter/docker-armbuilds/releases/download/v${DOCKER_ENGINE_VERSION}/$DOCKER_DEB" \
-  > "/$DOCKER_DEB"
-if [ -f "/$DOCKER_DEB" ]; then
-  dpkg -i "/$DOCKER_DEB" || /bin/true
-  rm -f "/$DOCKER_DEB"
-
-  # fix missing apt-get install dependencies
-  apt-get -f install -y
-fi
+#TODO: Install Docker CE later for Debian Jessie
 
 echo "Installing rpi-serial-console script"
 wget -q https://raw.githubusercontent.com/lurch/rpi-serial-console/master/rpi-serial-console -O usr/local/bin/rpi-serial-console
@@ -250,6 +240,25 @@ DEBIAN_FRONTEND=noninteractive DEBIAN_PRIORITY=critical apt-get -q -y -o "Dpkg::
 sed -i 's/Linux 8/Linux 9/g' /etc/issue
 sed -i 's/Linux 8/Linux 9/g' /etc/issue.net
 sed -i 's/Linux 8/Linux 9/g' /etc/motd
+#TODO:---
+
+#TODO:+++ change to Debian Stretch official repo, as soon as it's available
+# install Docker CE directly from Docker APT Repo but built for Ubuntu Xenial,
+# because currently it's the only available build for ARM64
+DOCKER_DEB="docker-ce_${DOCKER_ENGINE_VERSION}-0~ubuntu_arm64.deb"
+curl -sSL "https://download.docker.com/linux/ubuntu/dists/xenial/pool/edge/arm64/$DOCKER_DEB" \
+  > "/$DOCKER_DEB"
+if [ -f "/$DOCKER_DEB" ]; then
+  # install some runtime requirements for Docker CE
+  apt-get install -y libapparmor1 libltdl7 libseccomp2
+
+  # install Docker CE
+  dpkg -i "/$DOCKER_DEB" || /bin/true
+  rm -f "/$DOCKER_DEB"
+
+  # fix missing apt-get install dependencies
+  apt-get -f install -y
+fi
 #TODO:---
 
 # cleanup APT cache and lists
