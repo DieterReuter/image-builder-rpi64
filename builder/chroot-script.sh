@@ -220,6 +220,9 @@ chmod +x /usr/local/bin/docker-machine
 curl -sSL https://bootstrap.pypa.io/get-pip.py | python
 pip install docker-compose==${DOCKER_COMPOSE_VERSION}
 
+# install bash completion for Docker Compose
+curl -sSL "https://raw.githubusercontent.com/docker/compose/${DOCKER_COMPOSE_VERSION}/contrib/completion/bash/docker-compose" -o /etc/bash_completion.d/docker-compose
+
 # # set up Docker APT repository and install docker-engine package
 # #TODO: pin package version to ${DOCKER_ENGINE_VERSION}
 # curl -sSL https://get.docker.com | /bin/sh
