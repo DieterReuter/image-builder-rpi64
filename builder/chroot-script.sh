@@ -212,9 +212,12 @@ chmod +x /etc/systemd/system/device-init.service
 systemctl enable device-init.service
 
 # install Docker Machine directly from GitHub releases
-curl -sSL "https://github.com/docker/machine/releases/download/v$DOCKER_MACHINE_VERSION/docker-machine-Linux-aarch64" \
+curl -sSL "https://github.com/docker/machine/releases/download/v${DOCKER_MACHINE_VERSION}/docker-machine-Linux-aarch64" \
   > /usr/local/bin/docker-machine
 chmod +x /usr/local/bin/docker-machine
+
+# install bash completion for Docker Machine
+curl -sSL "https://raw.githubusercontent.com/docker/machine/v${DOCKER_MACHINE_VERSION}/contrib/completion/bash/docker-machine.bash" -o /etc/bash_completion.d/docker-machine
 
 # install Docker Compose via pip
 curl -sSL https://bootstrap.pypa.io/get-pip.py | python
