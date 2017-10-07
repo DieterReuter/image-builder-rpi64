@@ -207,6 +207,9 @@ apt-get install -y \
 curl -sSL "https://github.com/hypriot/device-init/releases/download/v$DEVICE_INIT_VERSION/device-init_linux_arm" \
   > /usr/local/bin/device-init
 chmod +x /usr/local/bin/device-init
+curl -sSL https://github.com/hypriot/device-init/raw/master/package/etc/systemd/system/device-init.service > /etc/systemd/system/device-init.service
+chmod +x /etc/systemd/system/device-init.service
+systemctl enable device-init.service
 
 # install Docker Machine directly from GitHub releases
 curl -sSL "https://github.com/docker/machine/releases/download/v$DOCKER_MACHINE_VERSION/docker-machine-Linux-aarch64" \
