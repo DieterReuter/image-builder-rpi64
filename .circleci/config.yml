@@ -8,4 +8,4 @@ jobs:
       - run: make sd-image
 
       - store_artifacts:
-          path: hypriotos-rpi64*
+          path: /home/circleci/project/hypriotos-rpi64*
