@@ -1,0 +1,11 @@
+version: 2
+jobs:
+  build:
+    machine: true
+    steps:
+      - checkout
+
+      - run: make sd-image
+
+      - store_artifacts:
+          path: hypriotos-rpi64*
