@@ -1,0 +1,19 @@
+#cloud-config
+# vim: syntax=yaml
+#
+hostname: black-pearl
+manage_etc_hosts: true
+
+users:
+  - name: pirate
+    gecos: "Hypriot Pirate"
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    shell: /bin/bash
+    groups: users,docker,video
+    plain_text_passwd: hypriot
+    lock_passwd: false
+    ssh_pwauth: true
+    chpasswd: { expire: false }
+
+package_upgrade: false
+
