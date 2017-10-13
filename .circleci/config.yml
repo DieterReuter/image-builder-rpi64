@@ -5,7 +5,10 @@ jobs:
     steps:
       - checkout
 
-      - run: make sd-image
+      - run: |
+          make sd-image
+          mkdir -p builds/
+          mv hypriotos-rpi64* builds/
 
       - store_artifacts:
-          path: /home/circleci/project/hypriotos-rpi64*
+          path: /home/circleci/project/builds
