@@ -140,9 +140,6 @@ curl -sSL https://github.com/RPi-Distro/firmware-nonfree/raw/master/brcm80211/br
 #   "libraspberrypi-dev=${KERNEL_BUILD}" \
 #   "libraspberrypi-bin=${KERNEL_BUILD}"
 
-# add user pirate to group video (for using the Raspberry Pi camera)
-usermod -a -G video pirate
-
 # enable serial console
 printf "# Spawn a getty on Raspberry Pi serial line\nT0:23:respawn:/sbin/getty -L ttyAMA0 115200 vt100\n" >> /etc/inittab
 
@@ -203,13 +200,13 @@ apt-get install -y \
 apt-get install -y \
   lsb-release
 
-# install Device Init directly from GitHub releases
-curl -sSL "https://github.com/hypriot/device-init/releases/download/v$DEVICE_INIT_VERSION/device-init_linux_arm" \
-  > /usr/local/bin/device-init
-chmod +x /usr/local/bin/device-init
-curl -sSL https://github.com/hypriot/device-init/raw/master/package/etc/systemd/system/device-init.service > /etc/systemd/system/device-init.service
-chmod +x /etc/systemd/system/device-init.service
-systemctl enable device-init.service
+# install cloud-init
+apt-get install -y \
+  cloud-init
+
+mkdir -p /var/lib/cloud/seed/nocloud-net
+ln -s /boot/user-data /var/lib/cloud/seed/nocloud-net/user-data
+ln -s /boot/meta-data /var/lib/cloud/seed/nocloud-net/meta-data
 
 # install Docker Machine directly from GitHub releases
 curl -sSL "https://github.com/docker/machine/releases/download/v${DOCKER_MACHINE_VERSION}/docker-machine-Linux-aarch64" \
