@@ -41,6 +41,7 @@ package_upgrade: false
 #  - ntp
 
 # # WiFi connect to HotSpot
+# # - use `wpa_passphrase SSID PASSWORD` to encrypt the psk
 # write_files:
 #   - content: |
 #       allow-hotplug wlan0

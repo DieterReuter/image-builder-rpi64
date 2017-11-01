@@ -279,7 +279,7 @@ rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 #TODO:+++ remove as soon as we do have a Debian Stretch os-rootfs image
 # set HypriotOS version infos
 BUILD_ARCH="${BUILD_ARCH:-arm64}"
-HYPRIOT_OS_VERSION="${HYPRIOT_OS_VERSION:-v1.1.1}"
+HYPRIOT_OS_VERSION="${HYPRIOT_OS_VERSION:-v1.2.3}"
 echo "HYPRIOT_OS=\"HypriotOS/${BUILD_ARCH}\"" >> /etc/os-release
 echo "HYPRIOT_OS_VERSION=\"${HYPRIOT_OS_VERSION}\"" >> /etc/os-release
 #TODO:---
