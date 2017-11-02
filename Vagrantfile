@@ -3,7 +3,7 @@
 ENV['VAGRANT_DEFAULT_PROVIDER'] = 'virtualbox'
 
 Vagrant.configure(2) do |config|
-  config.vm.box = "bento/ubuntu-14.04"
+  config.vm.box = "bento/ubuntu-16.04"
 
   config.vm.network "forwarded_port", guest: 2376, host: 2376, auto_correct: true
   config.vm.synced_folder ".", "#{`pwd`.chomp}"
@@ -19,10 +19,11 @@ Vagrant.configure(2) do |config|
   end
 
   config.vm.provision "shell", inline: <<-SHELL
-     sudo apt-key adv --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys 58118E89F3A912897C070ADBF76221572C52609D
-     echo "deb https://apt.dockerproject.org/repo ubuntu-trusty main" > /etc/apt/sources.list.d/docker.list
+     sudo apt update
+     sudo apt install --yes apt-transport-https ca-certificates curl software-properties-common
+     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+     sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
      sudo apt-get update
-     sudo apt-get install -y linux-image-extra-$(uname -r)
-     sudo apt-get install -y docker-engine
+     sudo apt-get install -y docker-ce
   SHELL
 end
