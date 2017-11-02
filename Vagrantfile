@@ -3,7 +3,7 @@
 ENV['VAGRANT_DEFAULT_PROVIDER'] = 'virtualbox'
 
 Vagrant.configure(2) do |config|
-  config.vm.box = "boxcutter/ubuntu1404"
+  config.vm.box = "bento/ubuntu-14.04"
 
   config.vm.network "forwarded_port", guest: 2376, host: 2376, auto_correct: true
   config.vm.synced_folder ".", "#{`pwd`.chomp}"
