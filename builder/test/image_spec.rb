@@ -27,7 +27,7 @@ describe "SD card image" do
     let(:stdout) { run_mounted("file-architecture /usr/bin/dpkg").stdout }
 
     it "is compiled for ARM architecture" do
-      expect(stdout).to contain('arm')
+      expect(stdout).to contain('aarch64')
     end
   end
 
