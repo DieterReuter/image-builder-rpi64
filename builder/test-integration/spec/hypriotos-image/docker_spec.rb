@@ -6,7 +6,7 @@ end
 
 describe command('dpkg -l docker-ce') do
   its(:stdout) { should match /ii  docker-ce/ }
-  its(:stdout) { should match /17.09.0~ce-0~ubuntu/ }
+  its(:stdout) { should match /17.10.0~ce-0~ubuntu/ }
   its(:stdout) { should match /arm64/ }
   its(:exit_status) { should eq 0 }
 end
@@ -73,13 +73,13 @@ describe file('/var/lib/docker/overlay2') do
 end
 
 describe command('docker -v') do
-  its(:stdout) { should match /Docker version 17.09.0-ce, build/ }
+  its(:stdout) { should match /Docker version 17.10.0-ce, build/ }
   its(:exit_status) { should eq 0 }
 end
 
 describe command('docker version') do
-  its(:stdout) { should match /Client:. Version:      17.09.0-ce. API version:  1.32/m }
-  its(:stdout) { should match /Server:. Version:      17.09.0-ce. API version:  1.32/m }
+  its(:stdout) { should match /Client:. Version:      17.10.0-ce. API version:  1.33/m }
+  its(:stdout) { should match /Server:. Version:      17.10.0-ce. API version:  1.33/m }
   its(:exit_status) { should eq 0 }
 end
 
