@@ -218,7 +218,7 @@ curl -sSL "https://raw.githubusercontent.com/docker/machine/v${DOCKER_MACHINE_VE
 
 # install Docker Compose via pip
 curl -sSL https://bootstrap.pypa.io/get-pip.py | python
-pip install docker-compose==${DOCKER_COMPOSE_VERSION}
+pip install docker-compose=="${DOCKER_COMPOSE_VERSION}"
 
 # install bash completion for Docker Compose
 curl -sSL "https://raw.githubusercontent.com/docker/compose/${DOCKER_COMPOSE_VERSION}/contrib/completion/bash/docker-compose" -o /etc/bash_completion.d/docker-compose
@@ -278,13 +278,14 @@ rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 #TODO:+++ remove as soon as we do have a Debian Stretch os-rootfs image
 # set HypriotOS version infos
+#TODO:---
+# set device label and version number
 BUILD_ARCH="${BUILD_ARCH:-arm64}"
 HYPRIOT_OS_VERSION="${HYPRIOT_OS_VERSION:-v1.2.3}"
-echo "HYPRIOT_OS=\"HypriotOS/${BUILD_ARCH}\"" >> /etc/os-release
-echo "HYPRIOT_OS_VERSION=\"${HYPRIOT_OS_VERSION}\"" >> /etc/os-release
-#TODO:---
-
-# set device label and version number
-echo "HYPRIOT_DEVICE=\"$HYPRIOT_DEVICE\"" >> /etc/os-release
-echo "HYPRIOT_IMAGE_VERSION=\"$HYPRIOT_IMAGE_VERSION\"" >> /etc/os-release
+cat <<EOF >> /etc/os-release
+HYPRIOT_OS="HypriotOS/${BUILD_ARCH}"
+HYPRIOT_OS_VERSION="${HYPRIOT_OS_VERSION}"
+HYPRIOT_DEVICE="$HYPRIOT_DEVICE"
+HYPRIOT_IMAGE_VERSION="$HYPRIOT_IMAGE_VERSION"
+EOF
 cp /etc/os-release /boot/os-release
