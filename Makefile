@@ -1,19 +1,21 @@
+VERSION ?= dirty
+
 default: build
 
 build:
-	docker build -t image-builder-rpi64 .
+	VERSION=${VERSION} docker build -t image-builder-rpi64 .
 
 sd-image: build
-	docker run --rm --privileged -v $(shell pwd):/workspace -v /boot:/boot -v /lib/modules:/lib/modules -e TRAVIS_TAG -e VERSION -e GITHUB_OAUTH_TOKEN image-builder-rpi64
+	VERSION=${VERSION} docker run --rm --privileged -v $(shell pwd):/workspace -v /boot:/boot -v /lib/modules:/lib/modules -e TRAVIS_TAG -e VERSION -e GITHUB_OAUTH_TOKEN image-builder-rpi64
 
 shell: build
-	docker run -ti --privileged -v $(shell pwd):/workspace -v /boot:/boot -v /lib/modules:/lib/modules -e TRAVIS_TAG -e VERSION -e GITHUB_OAUTH_TOKEN image-builder-rpi64 bash
+	VERSION=${VERSION} docker run -ti --privileged -v $(shell pwd):/workspace -v /boot:/boot -v /lib/modules:/lib/modules -e TRAVIS_TAG -e VERSION -e GITHUB_OAUTH_TOKEN image-builder-rpi64 bash
 
 test:
-	VERSION=dirty docker run --rm -ti --privileged -v $(shell pwd):/workspace -v /boot:/boot -v /lib/modules:/lib/modules -e TRAVIS_TAG -e VERSION image-builder-rpi64 bash -c "unzip /workspace/hypriotos-rpi64-dirty.img.zip && rspec --format documentation --color /workspace/builder/test/*_spec.rb"
+	VERSION=${VERSION} docker run --rm -ti --privileged -v $(shell pwd):/workspace -v /boot:/boot -v /lib/modules:/lib/modules -e TRAVIS_TAG -e VERSION image-builder-rpi64 bash -c "unzip /workspace/hypriotos-rpi64-${VERSION}.img.zip && rspec --format documentation --color /workspace/builder/test/*_spec.rb"
 
 shellcheck: build
-	VERSION=dirty docker run --rm -ti -v $(shell pwd):/workspace image-builder-rpi64 bash -c 'shellcheck /workspace/builder/*.sh /workspace/builder/files/etc/firstboot.d/*'
+	VERSION=${VERSION} docker run --rm -ti -v $(shell pwd):/workspace image-builder-rpi64 bash -c 'shellcheck /workspace/builder/*.sh /workspace/builder/files/etc/firstboot.d/*'
 
 vagrant:
 	vagrant up

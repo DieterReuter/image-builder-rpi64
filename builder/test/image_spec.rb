@@ -26,7 +26,7 @@ describe "SD card image" do
   context "Binary dpkg" do
     let(:stdout) { run_mounted("file-architecture /usr/bin/dpkg").stdout }
 
-    it "is compiled for ARM architecture" do
+    it "is compiled for ARM aarch64 architecture" do
       expect(stdout).to contain('aarch64')
     end
   end
@@ -43,11 +43,11 @@ describe "SD card image" do
     end
   end
 
-  context "Docker service file" do
-    let(:stdout) { run_mounted("cat /etc/systemd/system/docker.service.d/overlay.conf").stdout }
+  context "Docker systemd service file" do
+    let(:stdout) { run_mounted("cat /lib/systemd/system/docker.service").stdout }
 
-    it "Daemon uses overlay storage driver" do
-      expect(stdout).to contain("--storage-driver overlay")
+    it "Docker Engine is installed" do
+      expect(stdout).to contain("/usr/bin/dockerd")
     end
   end
 end

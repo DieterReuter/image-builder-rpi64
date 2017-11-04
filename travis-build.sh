@@ -29,8 +29,10 @@ echo "BUILD_NR=$BUILD_NR"
 BUILD_DEST=builds/$BUILD_NR
 mkdir -p $BUILD_DEST
 #-build
-###make shellcheck
+VERSION=v$BUILD_NR make shellcheck
 VERSION=v$BUILD_NR make sd-image
+#-test
+VERSION=v$BUILD_NR make test
 #-move artifacts to build dest
 mv hypriotos-rpi64* $BUILD_DEST/
 
