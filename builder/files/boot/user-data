@@ -54,7 +54,7 @@ package_upgrade: false
 #       update_config=1
 #       network={
 #       ssid="YOUR_WIFI_SSID"
-#       psk="YOUR_WIFI_PASSWORD"
+#       psk=YOUR_WIFI_PASSWORD
 #       proto=RSN
 #       key_mgmt=WPA-PSK
 #       pairwise=CCMP
