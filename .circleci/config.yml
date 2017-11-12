@@ -1,0 +1,13 @@
+version: 2
+jobs:
+  build:
+    machine: true
+    steps:
+      - checkout
+
+      - run: |
+          make sd-image
+          mkdir -p builds/
+          mv hypriotos-rpi64* builds/
+      - store_artifacts:
+          path: /home/circleci/project/builds
