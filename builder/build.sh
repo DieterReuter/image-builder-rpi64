@@ -50,10 +50,10 @@ if [ ! -f "$FILENAME" ]; then
   fetch --repo="https://github.com/DieterReuter/rpi-bootloader" --tag="v$BOOTLOADER_BUILD" --release-asset="rpi-bootloader.tar.gz" /workspace
 fi
 tar -xf "$FILENAME" -C "${BUILD_PATH}"
-FILENAME=/workspace/$KERNEL_VERSION-bee42-v8.tar.gz
+FILENAME=/workspace/$KERNEL_VERSION-hypriotos-v8.tar.gz
 if [ ! -f "$FILENAME" ]; then
-  fetch --repo="https://github.com/DieterReuter/rpi64-kernel" --tag="v$KERNEL_BUILD" --release-asset="$KERNEL_VERSION-bee42-v8.tar.gz.sha256" /workspace
-  fetch --repo="https://github.com/DieterReuter/rpi64-kernel" --tag="v$KERNEL_BUILD" --release-asset="$KERNEL_VERSION-bee42-v8.tar.gz" /workspace
+  fetch --repo="https://github.com/DieterReuter/rpi64-kernel" --tag="v$KERNEL_BUILD" --release-asset="$KERNEL_VERSION-hypriotos-v8.tar.gz.sha256" /workspace
+  fetch --repo="https://github.com/DieterReuter/rpi64-kernel" --tag="v$KERNEL_BUILD" --release-asset="$KERNEL_VERSION-hypriotos-v8.tar.gz" /workspace
 fi
 tar -xf "$FILENAME" -C "${BUILD_PATH}"
 
