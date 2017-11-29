@@ -29,7 +29,7 @@ echo "BUILD_NR=$BUILD_NR"
 BUILD_DEST=builds/$BUILD_NR
 mkdir -p $BUILD_DEST
 #-build
-VERSION=v$BUILD_NR make shellcheck
+#VERSION=v$BUILD_NR make shellcheck --exclude=SC1091
 VERSION=v$BUILD_NR make sd-image
 #-test
 VERSION=v$BUILD_NR make test
