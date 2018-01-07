@@ -274,6 +274,7 @@ sed -i 's/Linux 8/Linux 9/g' /etc/motd
 
 # set device label and version number
 cat <<EOF >> /etc/os-release
+HYPRIOT_BOOTLOADER_BUILD="${BOOTLOADER_BUILD}"
 HYPRIOT_KERNEL_BUILD="${KERNEL_BUILD}"
 HYPRIOT_KERNEL_VERSION="${KERNEL_VERSION}"
 HYPRIOT_DEVICE="$HYPRIOT_DEVICE"
