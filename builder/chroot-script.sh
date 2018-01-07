@@ -236,17 +236,10 @@ echo '{
 }
 ' > /etc/docker/daemon.json
 
-#TODO: Install Docker CE later for Debian Jessie
-
-echo "Installing rpi-serial-console script"
-wget -q https://raw.githubusercontent.com/lurch/rpi-serial-console/master/rpi-serial-console -O usr/local/bin/rpi-serial-console
-chmod +x usr/local/bin/rpi-serial-console
-
 #TODO:+++ change to Debian Stretch official repo, as soon as it's available
-# install Docker CE directly from Docker APT Repo but built for Ubuntu Xenial,
-# because currently it's the only available build for ARM64
-DOCKER_DEB="docker-ce_${DOCKER_ENGINE_VERSION}-0~ubuntu_arm64.deb"
-curl -sSL "https://download.docker.com/linux/ubuntu/dists/xenial/pool/edge/arm64/$DOCKER_DEB" \
+# install Docker CE directly from Docker APT Repo but built for Debian Stretch ARM64
+DOCKER_DEB="docker-ce_${DOCKER_ENGINE_VERSION}-0~debian_arm64.deb"
+curl -sSL "https://download.docker.com/linux/debian/dists/stretch/pool/edge/arm64/$DOCKER_DEB" \
   > "/$DOCKER_DEB"
 if [ -f "/$DOCKER_DEB" ]; then
   # install some runtime requirements for Docker CE
@@ -260,6 +253,10 @@ if [ -f "/$DOCKER_DEB" ]; then
   apt-get -f install -y
 fi
 #TODO:---
+
+echo "Installing rpi-serial-console script"
+wget -q https://raw.githubusercontent.com/lurch/rpi-serial-console/master/rpi-serial-console -O usr/local/bin/rpi-serial-console
+chmod +x usr/local/bin/rpi-serial-console
 
 # cleanup APT cache and lists
 apt-get clean
