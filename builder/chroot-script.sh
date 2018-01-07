@@ -265,13 +265,6 @@ fi
 apt-get clean
 rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-#TODO:+++ fix version info for Debian Stretch
-# should be fixed in os-rootfs
-sed -i 's/Linux 8/Linux 9/g' /etc/issue
-sed -i 's/Linux 8/Linux 9/g' /etc/issue.net
-sed -i 's/Linux 8/Linux 9/g' /etc/motd
-#TODO:---
-
 # set device label and version number
 cat <<EOF >> /etc/os-release
 HYPRIOT_BOOTLOADER_BUILD="${BOOTLOADER_BUILD}"
