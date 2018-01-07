@@ -1,10 +1,10 @@
 require 'spec_helper'
 
 describe command('uname -r') do
-  its(:stdout) { should match /4.9.70-hypriotos-v8/ }
+  its(:stdout) { should match /4.9.73-hypriotos-v8/ }
   its(:exit_status) { should eq 0 }
 end
 
-describe file('/lib/modules/4.9.70-hypriotos-v8/kernel') do
+describe file('/lib/modules/4.9.73-hypriotos-v8/kernel') do
   it { should be_directory }
 end
