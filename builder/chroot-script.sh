@@ -217,6 +217,8 @@ chmod +x /usr/local/bin/docker-machine
 curl -sSL "https://raw.githubusercontent.com/docker/machine/v${DOCKER_MACHINE_VERSION}/contrib/completion/bash/docker-machine.bash" -o /etc/bash_completion.d/docker-machine
 
 # install Docker Compose via pip
+apt-get install -y \
+  python
 curl -sSL https://bootstrap.pypa.io/get-pip.py | python
 pip install docker-compose=="${DOCKER_COMPOSE_VERSION}"
 
@@ -239,19 +241,6 @@ echo '{
 echo "Installing rpi-serial-console script"
 wget -q https://raw.githubusercontent.com/lurch/rpi-serial-console/master/rpi-serial-console -O usr/local/bin/rpi-serial-console
 chmod +x usr/local/bin/rpi-serial-console
-
-#TODO:+++ remove as soon as we do have a Debian Stretch os-rootfs image
-# upgrade to Debian Stretch
-# see: https://linuxconfig.org/how-to-upgrade-debian-8-jessie-to-debian-9-stretch
-apt-get dist-upgrade -y
-sed -i 's/jessie/stretch/g' /etc/apt/sources.list
-apt-get update
-DEBIAN_FRONTEND=noninteractive DEBIAN_PRIORITY=critical apt-get -q -y -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" upgrade
-DEBIAN_FRONTEND=noninteractive DEBIAN_PRIORITY=critical apt-get -q -y -o "Dpkg::Options::=--force-confdef" -o "Dpkg::Options::=--force-confold" dist-upgrade
-sed -i 's/Linux 8/Linux 9/g' /etc/issue
-sed -i 's/Linux 8/Linux 9/g' /etc/issue.net
-sed -i 's/Linux 8/Linux 9/g' /etc/motd
-#TODO:---
 
 #TODO:+++ change to Debian Stretch official repo, as soon as it's available
 # install Docker CE directly from Docker APT Repo but built for Ubuntu Xenial,
@@ -276,15 +265,15 @@ fi
 apt-get clean
 rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-#TODO:+++ remove as soon as we do have a Debian Stretch os-rootfs image
-# set HypriotOS version infos
+#TODO:+++ fix version info for Debian Stretch
+# should be fixed in os-rootfs
+sed -i 's/Linux 8/Linux 9/g' /etc/issue
+sed -i 's/Linux 8/Linux 9/g' /etc/issue.net
+sed -i 's/Linux 8/Linux 9/g' /etc/motd
 #TODO:---
+
 # set device label and version number
-BUILD_ARCH="${BUILD_ARCH:-arm64}"
-HYPRIOT_OS_VERSION="${HYPRIOT_OS_VERSION:-v1.2.3}"
 cat <<EOF >> /etc/os-release
-HYPRIOT_OS="HypriotOS/${BUILD_ARCH}"
-HYPRIOT_OS_VERSION="${HYPRIOT_OS_VERSION}"
 HYPRIOT_KERNEL_BUILD="${KERNEL_BUILD}"
 HYPRIOT_KERNEL_VERSION="${KERNEL_VERSION}"
 HYPRIOT_DEVICE="$HYPRIOT_DEVICE"
