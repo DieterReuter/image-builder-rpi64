@@ -200,9 +200,11 @@ apt-get install -y \
 apt-get install -y \
   lsb-release
 
-# install cloud-init
+# install cloud-init and its required dependencies
 apt-get install -y \
-  cloud-init
+  cloud-init \
+  dirmngr \
+  less
 
 mkdir -p /var/lib/cloud/seed/nocloud-net
 ln -s /boot/user-data /var/lib/cloud/seed/nocloud-net/user-data
