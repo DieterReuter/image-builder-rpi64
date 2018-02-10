@@ -6,7 +6,7 @@ end
 
 describe command('dpkg -l docker-ce') do
   its(:stdout) { should match /ii  docker-ce/ }
-  its(:stdout) { should match /18.01.0~ce-0~debian/ }
+  its(:stdout) { should match /18.02.0~ce-0~debian/ }
   its(:stdout) { should match /arm64/ }
   its(:exit_status) { should eq 0 }
 end
@@ -73,7 +73,7 @@ describe file('/var/lib/docker/overlay2') do
 end
 
 describe command('docker -v') do
-  its(:stdout) { should match /Docker version 18.01.0-ce, build/ }
+  its(:stdout) { should match /Docker version 18.02.0-ce, build/ }
   its(:exit_status) { should eq 0 }
 end
 
