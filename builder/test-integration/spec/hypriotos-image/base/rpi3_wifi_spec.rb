@@ -9,8 +9,8 @@ if cpu_info.include?('a02082') or cpu_info.include?('a22082')
 
     describe command('ethtool -i wlan0') do
       its(:stdout) { should contain /driver: brcmfmac/ }
-      its(:stdout) { should contain /version: 7.45.41.26/ }
-      its(:stdout) { should contain /firmware-version: 01-df77e4a7/ }
+      its(:stdout) { should contain /version: 7.45.98.38/ }
+      its(:stdout) { should contain /firmware-version: 01-e58d219f/ }
     end
   end
 end
@@ -36,7 +36,7 @@ describe "RPi 3: built-in wifi works" do
 
   describe command('ethtool -i wlan0') do
     its(:stdout) { should contain /driver: brcmfmac/ }
-    its(:stdout) { should contain /version: 7.45.41.26/ }
-    its(:stdout) { should contain /firmware-version: 01-df77e4a7/ }
+    its(:stdout) { should contain /version: 7.45.98.38/ }
+    its(:stdout) { should contain /firmware-version: 01-e58d219f/ }
   end
 end
