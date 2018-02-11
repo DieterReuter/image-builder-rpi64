@@ -129,8 +129,7 @@ apt-get upgrade -y
 
 # install WiFi firmware for internal RPi3 WiFi module
 mkdir -p /lib/firmware/brcm
-curl -sSL https://github.com/RPi-Distro/firmware-nonfree/raw/master/brcm80211/brcm/brcmfmac43430-sdio.bin > /lib/firmware/brcm/brcmfmac43430-sdio.bin
-curl -sSL https://github.com/RPi-Distro/firmware-nonfree/raw/master/brcm80211/brcm/brcmfmac43430-sdio.txt > /lib/firmware/brcm/brcmfmac43430-sdio.txt
+curl -sSL https://github.com/RPi-Distro/firmware-nonfree/raw/master/brcm/brcmfmac43430-sdio.bin > /lib/firmware/brcm/brcmfmac43430-sdio.bin
 
 # install kernel- and firmware-packages
 # apt-get install -y \
