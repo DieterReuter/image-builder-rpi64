@@ -8,7 +8,7 @@ releases page. To build this SD card image we have to
  * take the files for the root filesystem from [`os-rootfs`](https://github.com/hypriot/os-rootfs)
  * take the empty raw filesystem from [`image-builder-raw`](https://github.com/hypriot/image-builder-raw) with the two partitions
  * add Hypriot's Debian repos
- * install the Raspberry Pi kernel from [`rpi-kernel64`](https://github.com/dieterreuter/rpi-kernel64)
+ * install the Raspberry Pi kernel from [`rpi64-kernel`](https://github.com/dieterreuter/rpi64-kernel)
  * install Docker tools Docker Engine, Docker Compose and Docker Machine
 
 Here is an example how all the GitHub repos play together:
