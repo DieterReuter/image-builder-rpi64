@@ -1,5 +1,15 @@
 FROM hypriot/image-builder:latest
 
+ENV FETCH_MISSING_ARTIFACTS=true \
+    ROOT_FS_ARTIFACT=rootfs-arm64-debian-v1.2.5.tar.gz \
+    KERNEL_ARTIFACT=4.9.80-hypriotos-v8.tar.gz \
+    BOOTLOADER_ARTIFACT=rpi-bootloader.tar.gz \
+    RAW_IMAGE_ARTIFACT=rpi-raw.img.zip \
+    DOCKER_ENGINE_VERSION="18.02.0~ce" \
+    DOCKER_COMPOSE_VERSION="1.19.0" \
+    DOCKER_MACHINE_VERSION="0.13.0"
+
+
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y \
     binfmt-support \
