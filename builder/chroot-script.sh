@@ -265,12 +265,20 @@ chmod +x usr/local/bin/rpi-serial-console
 apt-get clean
 rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+if [ "$FETCH_MISSING_ARTIFACTS" == "true" ]; then
 # set device label and version number
-cat <<EOF >> /etc/os-release
-HYPRIOT_BOOTLOADER_BUILD="${BOOTLOADER_BUILD}"
-HYPRIOT_KERNEL_BUILD="${KERNEL_BUILD}"
-HYPRIOT_KERNEL_VERSION="${KERNEL_VERSION}"
-HYPRIOT_DEVICE="$HYPRIOT_DEVICE"
-HYPRIOT_IMAGE_VERSION="$HYPRIOT_IMAGE_VERSION"
-EOF
+  cat <<EOF >> /etc/os-release
+  HYPRIOT_BOOTLOADER_BUILD="${BOOTLOADER_BUILD}"
+  HYPRIOT_KERNEL_BUILD="${KERNEL_BUILD}"
+  HYPRIOT_KERNEL_VERSION="${KERNEL_VERSION}"
+  HYPRIOT_DEVICE="$HYPRIOT_DEVICE"
+  HYPRIOT_IMAGE_VERSION="$HYPRIOT_IMAGE_VERSION"
+  EOF
+else
+  cat <<EOF >> /etc/os-release
+  HYPRIOT_KERNEL_VERSION="${KERNEL_VERSION}"
+  HYPRIOT_DEVICE="$HYPRIOT_DEVICE"
+  HYPRIOT_IMAGE_VERSION="$HYPRIOT_IMAGE_VERSION"
+  EOF
+fi
 cp /etc/os-release /boot/os-release

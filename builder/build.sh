@@ -6,9 +6,11 @@ if [ ! -f /.dockerenv ]; then
   exit 1
 fi
 
-# get versions for software that needs to be installed
-# shellcheck disable=SC1091
-source /workspace/versions.config
+if [ "$FETCH_MISSING_ARTIFACTS" == "true" ]; then
+  # get versions for software that needs to be installed
+  # shellcheck disable=SC1091
+  source /workspace/versions.config
+fi
 
 ### setting up some important variables to control the build process
 
@@ -130,6 +132,7 @@ if [ "$FETCH_MISSING_ARTIFACTS" == "true" ]; then
   echo "${RAW_IMAGE_CHECKSUM} ${BUILD_RESULT_PATH}/${RAW_IMAGE_ARTIFACT}" | sha256sum -c -
 fi
 
+RAW_IMAGE=${RAW_IMAGE_ARTIFACT%.*}
 unzip -p "${BUILD_RESULT_PATH}/${RAW_IMAGE}" > "/${HYPRIOT_IMAGE_NAME}"
 
 # create the image and add root base filesystem
