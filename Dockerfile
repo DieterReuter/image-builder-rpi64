@@ -1,7 +1,10 @@
 FROM hypriot/image-builder:latest
 
+ENV HYPRIOT_OS_VERSION=v1.2.6 \
+    RAW_IMAGE_VERSION=v0.2.2
+
 ENV FETCH_MISSING_ARTIFACTS=true \
-    ROOT_FS_ARTIFACT=rootfs-arm64-debian-v1.2.5.tar.gz \
+    ROOT_FS_ARTIFACT=rootfs-arm64-debian-$HYPRIOT_OS_VERSION.tar.gz \
     KERNEL_ARTIFACT=4.9.80-hypriotos-v8.tar.gz \
     BOOTLOADER_ARTIFACT=rpi-bootloader.tar.gz \
     RAW_IMAGE_ARTIFACT=rpi-raw.img.zip \

@@ -117,6 +117,7 @@ tar -czf /image_with_kernel_root.tar.gz -C ${BUILD_PATH} .
 du -sh ${BUILD_PATH}
 ls -alh /image_with_kernel_*.tar.gz
 
+RAW_IMAGE=${RAW_IMAGE_ARTIFACT%.*}
 # download the ready-made raw image for the RPi
 if [ ! -f "${BUILD_RESULT_PATH}/${RAW_IMAGE_ARTIFACT}" ]; then
   if [ "$FETCH_MISSING_ARTIFACTS" == "true" ]; then
@@ -132,7 +133,6 @@ if [ "$FETCH_MISSING_ARTIFACTS" == "true" ]; then
   echo "${RAW_IMAGE_CHECKSUM} ${BUILD_RESULT_PATH}/${RAW_IMAGE_ARTIFACT}" | sha256sum -c -
 fi
 
-RAW_IMAGE=${RAW_IMAGE_ARTIFACT%.*}
 unzip -p "${BUILD_RESULT_PATH}/${RAW_IMAGE}" > "/${HYPRIOT_IMAGE_NAME}"
 
 # create the image and add root base filesystem
