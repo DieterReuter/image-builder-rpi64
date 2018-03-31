@@ -6,12 +6,6 @@ if [ ! -f /.dockerenv ]; then
   exit 1
 fi
 
-if [ "$FETCH_MISSING_ARTIFACTS" == "true" ]; then
-  # get versions for software that needs to be installed
-  # shellcheck disable=SC1091
-  source /workspace/versions.config
-fi
-
 ### setting up some important variables to control the build process
 
 # place to store our created sd-image file
