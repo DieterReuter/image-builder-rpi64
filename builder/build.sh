@@ -6,10 +6,6 @@ if [ ! -f /.dockerenv ]; then
   exit 1
 fi
 
-# get versions for software that needs to be installed
-# shellcheck disable=SC1091
-source /workspace/versions.config
-
 ### setting up some important variables to control the build process
 
 # place to store our created sd-image file
@@ -18,7 +14,7 @@ BUILD_RESULT_PATH="/workspace"
 # place to build our sd-image
 BUILD_PATH="/build"
 
-ROOTFS_TAR="rootfs-arm64-debian-${HYPRIOT_OS_VERSION}.tar.gz"
+ROOTFS_TAR=${ROOT_FS_ARTIFACT}
 ROOTFS_TAR_PATH="${BUILD_RESULT_PATH}/${ROOTFS_TAR}"
 
 # Show TRAVSI_TAG in travis builds
@@ -35,26 +31,44 @@ mkdir ${BUILD_PATH}
 
 # download our base root file system
 if [ ! -f "${ROOTFS_TAR_PATH}" ]; then
-  wget -q -O "${ROOTFS_TAR_PATH}" "https://github.com/hypriot/os-rootfs/releases/download/${HYPRIOT_OS_VERSION}/${ROOTFS_TAR}"
+  if [ "$FETCH_MISSING_ARTIFACTS" == "true" ]; then
+    wget -q -O "${ROOTFS_TAR_PATH}" "https://github.com/hypriot/os-rootfs/releases/download/${HYPRIOT_OS_VERSION}/${ROOTFS_TAR}"
+  else
+    echo "Missing artifact ${ROOT_FS_ARTIFACT}"
+    exit 255
+  fi
 fi
 
-# verify checksum of our root filesystem
-echo "${ROOTFS_TAR_CHECKSUM} ${ROOTFS_TAR_PATH}" | sha256sum -c -
+if [ "$FETCH_MISSING_ARTIFACTS" == "true" ]; then
+  # verify checksum of our root filesystem
+  echo "${ROOTFS_TAR_CHECKSUM} ${ROOTFS_TAR_PATH}" | sha256sum -c -
+fi
 
 # extract root file system
 tar xf "${ROOTFS_TAR_PATH}" -C "${BUILD_PATH}"
 
 # extract/add additional files
-FILENAME=/workspace/rpi-bootloader.tar.gz
+FILENAME=/workspace/$BOOTLOADER_ARTIFACT
 if [ ! -f "$FILENAME" ]; then
-  fetch --repo="https://github.com/DieterReuter/rpi-bootloader" --tag="v$BOOTLOADER_BUILD" --release-asset="rpi-bootloader.tar.gz.sha256" /workspace
-  fetch --repo="https://github.com/DieterReuter/rpi-bootloader" --tag="v$BOOTLOADER_BUILD" --release-asset="rpi-bootloader.tar.gz" /workspace
+  if [ "$FETCH_MISSING_ARTIFACTS" == "true" ]; then
+    fetch --repo="https://github.com/DieterReuter/rpi-bootloader" --tag="v$BOOTLOADER_BUILD" --release-asset="rpi-bootloader.tar.gz.sha256" /workspace
+    fetch --repo="https://github.com/DieterReuter/rpi-bootloader" --tag="v$BOOTLOADER_BUILD" --release-asset="rpi-bootloader.tar.gz" /workspace
+  else
+    echo "Missing artifact ${BOOTLOADER_ARTIFACT}"
+    exit 255
+  fi
 fi
 tar -xf "$FILENAME" -C "${BUILD_PATH}"
-FILENAME=/workspace/$KERNEL_VERSION-hypriotos-v8.tar.gz
+
+FILENAME=/workspace/$KERNEL_ARTIFACT
 if [ ! -f "$FILENAME" ]; then
-  fetch --repo="https://github.com/DieterReuter/rpi64-kernel" --tag="v$KERNEL_BUILD" --release-asset="$KERNEL_VERSION-hypriotos-v8.tar.gz.sha256" /workspace
-  fetch --repo="https://github.com/DieterReuter/rpi64-kernel" --tag="v$KERNEL_BUILD" --release-asset="$KERNEL_VERSION-hypriotos-v8.tar.gz" /workspace
+  if [ "$FETCH_MISSING_ARTIFACTS" == "true" ]; then
+    fetch --repo="https://github.com/DieterReuter/rpi64-kernel" --tag="v$KERNEL_BUILD" --release-asset="$KERNEL_VERSION-hypriotos-v8.tar.gz.sha256" /workspace
+    fetch --repo="https://github.com/DieterReuter/rpi64-kernel" --tag="v$KERNEL_BUILD" --release-asset="$KERNEL_VERSION-hypriotos-v8.tar.gz" /workspace
+  else
+    echo "Missing artifact ${KERNEL_ARTIFACT}"
+    exit 255
+  fi
 fi
 tar -xf "$FILENAME" -C "${BUILD_PATH}"
 
@@ -97,13 +111,21 @@ tar -czf /image_with_kernel_root.tar.gz -C ${BUILD_PATH} .
 du -sh ${BUILD_PATH}
 ls -alh /image_with_kernel_*.tar.gz
 
+RAW_IMAGE=${RAW_IMAGE_ARTIFACT%.*}
 # download the ready-made raw image for the RPi
-if [ ! -f "${BUILD_RESULT_PATH}/${RAW_IMAGE}.zip" ]; then
-  wget -q -O "${BUILD_RESULT_PATH}/${RAW_IMAGE}.zip" "https://github.com/hypriot/image-builder-raw/releases/download/${RAW_IMAGE_VERSION}/${RAW_IMAGE}.zip"
+if [ ! -f "${BUILD_RESULT_PATH}/${RAW_IMAGE_ARTIFACT}" ]; then
+  if [ "$FETCH_MISSING_ARTIFACTS" == "true" ]; then
+    wget -q -O "${BUILD_RESULT_PATH}/${RAW_IMAGE_ARTIFACT}" "https://github.com/hypriot/image-builder-raw/releases/download/${RAW_IMAGE_VERSION}/${RAW_IMAGE}.zip"
+  else
+    echo "Missing artifact ${RAW_IMAGE_ARTIFACT}"
+    exit 255
+  fi
 fi
 
-# verify checksum of the ready-made raw image
-echo "${RAW_IMAGE_CHECKSUM} ${BUILD_RESULT_PATH}/${RAW_IMAGE}.zip" | sha256sum -c -
+if [ "$FETCH_MISSING_ARTIFACTS" == "true" ]; then
+  # verify checksum of the ready-made raw image
+  echo "${RAW_IMAGE_CHECKSUM} ${BUILD_RESULT_PATH}/${RAW_IMAGE_ARTIFACT}" | sha256sum -c -
+fi
 
 unzip -p "${BUILD_RESULT_PATH}/${RAW_IMAGE}" > "/${HYPRIOT_IMAGE_NAME}"
 
