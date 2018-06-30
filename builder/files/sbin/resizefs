@@ -1,0 +1,29 @@
+#!/bin/sh
+
+mount -t proc proc /proc
+mount -t sysfs sys /sys
+mount -t tmpfs tmp /run
+mount / -o remount,rw
+
+PART_START=$(cat /sys/block/mmcblk0/mmcblk0p2/start)
+
+echo "Modifying partition table"
+fdisk -u /dev/mmcblk0 <<EOF
+p
+d
+2
+n
+p
+2
+$PART_START
+
+p
+w
+EOF
+echo "Partition table changed. rebooting"
+rm /sbin/init /sbin/resizefs
+mv /sbin/init.bak /sbin/init
+echo 1 > /proc/sys/kernel/sysrq
+mount / -o remount,ro
+sync
+echo b > /proc/sysrq-trigger
