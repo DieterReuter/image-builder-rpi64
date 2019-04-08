@@ -221,9 +221,18 @@ curl -sSL "https://raw.githubusercontent.com/docker/machine/v${DOCKER_MACHINE_VE
 
 # install Docker Compose via pip
 apt-get install -y \
-  python
+        build-essential python python-dev \
+        libffi-dev libssl-dev
+
 curl -sSL https://bootstrap.pypa.io/get-pip.py | python
 pip install docker-compose=="${DOCKER_COMPOSE_VERSION}"
+
+apt-get purge -y \
+        build-essential python-dev \
+        libffi-dev libssl-dev
+apt-get autoremove -y --purge
+apt-get autoclean
+apt-get clean
 
 # install bash completion for Docker Compose
 curl -sSL "https://raw.githubusercontent.com/docker/compose/${DOCKER_COMPOSE_VERSION}/contrib/completion/bash/docker-compose" -o /etc/bash_completion.d/docker-compose
@@ -241,19 +250,25 @@ echo '{
 
 #TODO:+++ change to Debian Stretch official repo, as soon as it's available
 # install Docker CE directly from Docker APT Repo but built for Debian Stretch ARM64
-DOCKER_DEB="docker-ce_${DOCKER_ENGINE_VERSION}-0~debian_arm64.deb"
+DOCKER_DEB="docker-ce_${DOCKER_ENGINE_VERSION}-0~debian-stretch_arm64.deb"
+DOCKER_CLI_DEB="docker-ce-cli_${DOCKER_ENGINE_VERSION}-0~debian-stretch_arm64.deb"
+CONTAINERD_IO_DEB="containerd.io_${CONTAINERD_IO_VERSION}-1_arm64.deb"
 curl -sSL "https://download.docker.com/linux/debian/dists/stretch/pool/edge/arm64/$DOCKER_DEB" \
   > "/$DOCKER_DEB"
-if [ -f "/$DOCKER_DEB" ]; then
-  # install some runtime requirements for Docker CE
-  apt-get install -y libapparmor1 libltdl7 libseccomp2
+curl -sSL "https://download.docker.com/linux/debian/dists/stretch/pool/edge/arm64/$DOCKER_CLI_DEB" \
+     > "/$DOCKER_CLI_DEB"
+curl -sSL "https://download.docker.com/linux/debian/dists/stretch/pool/edge/arm64/$CONTAINERD_IO_DEB" \
+     > "/$CONTAINERD_IO_DEB"
+if [ -f "/$DOCKER_CLI_DEB" ] && [ -f "/$CONTAINERD_IO_DEB" ] && [ -f "/$DOCKER_DEB" ]; then
+    # install some runtime requirements for Docker CE
+    apt-get install -y libapparmor1 libltdl7 libseccomp2
 
-  # install Docker CE
-  dpkg -i "/$DOCKER_DEB" || /bin/true
-  rm -f "/$DOCKER_DEB"
+    # install Docker CE et al.
+    dpkg -i "/$DOCKER_CLI_DEB"  "/$CONTAINERD_IO_DEB" "/$DOCKER_DEB"|| /bin/true
+    rm -f "/$DOCKER_CLI_DEB" "/$CONTAINERD_IO_DEB" "/$DOCKER_DEB"
 
-  # fix missing apt-get install dependencies
-  apt-get -f install -y
+    # fix missing apt-get install dependencies
+    apt-get -f install -y
 fi
 #TODO:---
 
