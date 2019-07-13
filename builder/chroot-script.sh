@@ -225,9 +225,14 @@ curl -sSL "https://raw.githubusercontent.com/docker/machine/v${DOCKER_MACHINE_VE
 
 # install Docker Compose via pip
 apt-get install -y \
-  python
+  build-essential libffi-dev libssl-dev python python-dev
 curl -sSL https://bootstrap.pypa.io/get-pip.py | python
 pip install docker-compose=="${DOCKER_COMPOSE_VERSION}"
+apt-get purge -y \
+  build-essential libffi-dev libssl-dev python-dev
+apt-get autoremove -y --purge
+apt-get autoclean
+apt-get clean
 
 # install bash completion for Docker Compose
 curl -sSL "https://raw.githubusercontent.com/docker/compose/${DOCKER_COMPOSE_VERSION}/contrib/completion/bash/docker-compose" -o /etc/bash_completion.d/docker-compose
