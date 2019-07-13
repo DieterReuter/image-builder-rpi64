@@ -177,6 +177,10 @@ proc /proc proc defaults 0 0
 /dev/mmcblk0p2 / ext4 defaults,noatime 0 1
 " > /etc/fstab
 
+# run resize script on first boot (phase 1)
+mv /sbin/init /sbin/init.bak
+ln -s /sbin/resizefs /sbin/init
+
 # as the Pi does not have a hardware clock we need a fake one
 apt-get install -y \
   fake-hwclock
