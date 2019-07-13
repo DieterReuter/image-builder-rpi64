@@ -85,6 +85,9 @@ TAG=v0.0.1 make tag
 After that open the GitHub release of this version and fill it with relevant
 changes and links to resolved issues.
 
+
 ## License
 
-MIT - see the [LICENSE](./LICENSE) file for details.
+MIT License
+
+Copyright (c) 2017-2019 Dieter Reuter
