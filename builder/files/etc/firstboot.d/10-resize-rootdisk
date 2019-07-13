@@ -9,4 +9,4 @@ if ! [ -h /dev/disk/by-label/root ]; then
 fi
 
 ROOT_PART=$(readlink /dev/disk/by-label/root)
-/sbin/resize2fs $ROOT_PART
+/sbin/resize2fs "$ROOT_PART"
