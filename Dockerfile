@@ -1,7 +1,7 @@
 FROM hypriot/image-builder:latest
 
 ENV HYPRIOT_OS_VERSION=v2.1.0 \
-    RAW_IMAGE_VERSION=v0.2.2
+    RAW_IMAGE_VERSION=v0.3.1
 
 #Note that the checksums and build timestamps only apply when fetching missing
 #artifacts remotely is enabled to validate downloaded remote artifacts
@@ -16,7 +16,7 @@ ENV FETCH_MISSING_ARTIFACTS=true \
     DOCKER_MACHINE_VERSION="0.16.1" \
     KERNEL_VERSION="4.19.58" \
     ROOTFS_TAR_CHECKSUM="4437ac3ab8278a4a3994aa9aa36f0f00bc409f80ebdffef23a141dfc0286ecb0" \
-    RAW_IMAGE_CHECKSUM="2fbeb13b7b0f2308dbd0d82780b54c33003ad43d145ff08498b25fb8bbe1c2c6" \
+    RAW_IMAGE_CHECKSUM="ccff10498fb45fb76c6064988fb01b3543adfdb70ee7e5fb04b51885573684a6" \
     BOOTLOADER_BUILD="20190713-140339" \
     KERNEL_BUILD="20190713-150518"
 
