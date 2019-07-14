@@ -215,6 +215,39 @@ mkdir -p /var/lib/cloud/seed/nocloud-net
 ln -s /boot/user-data /var/lib/cloud/seed/nocloud-net/user-data
 ln -s /boot/meta-data /var/lib/cloud/seed/nocloud-net/meta-data
 
+# enable Docker Engine experimental features
+mkdir -p /etc/docker/
+echo '{
+  "experimental": true
+}
+' > /etc/docker/daemon.json
+
+# set up Docker APT repository and install official Docker CE packages
+# see: https://docs.docker.com/install/linux/docker-ce/debian/
+#
+# Install packages to allow apt to use a repository over HTTPS:
+apt-get install -y \
+  apt-transport-https \
+  ca-certificates \
+  curl \
+  gnupg2 \
+  software-properties-common
+# Add Docker’s official GPG key:
+curl -fsSL https://download.docker.com/linux/debian/gpg | apt-key add -
+# Verify fingerprint of Docker’s official GPG key:
+apt-key fingerprint 0EBFCD88
+# Set up set the stable Docker repository:
+add-apt-repository \
+   "deb [arch=arm64] https://download.docker.com/linux/debian \
+   $(lsb_release -cs) \
+   stable"
+# Install Docker CE
+apt-get update
+apt-get install -y \
+  docker-ce="${DOCKER_ENGINE_VERSION}" \
+  docker-ce-cli="${DOCKER_ENGINE_VERSION}" \
+  containerd.io="${CONTAINERD_IO_VERSION}"
+
 # install Docker Machine directly from GitHub releases
 curl -sSL "https://github.com/docker/machine/releases/download/v${DOCKER_MACHINE_VERSION}/docker-machine-Linux-aarch64" \
   > /usr/local/bin/docker-machine
@@ -223,48 +256,21 @@ chmod +x /usr/local/bin/docker-machine
 # install bash completion for Docker Machine
 curl -sSL "https://raw.githubusercontent.com/docker/machine/v${DOCKER_MACHINE_VERSION}/contrib/completion/bash/docker-machine.bash" -o /etc/bash_completion.d/docker-machine
 
-# install Docker Compose via pip
-apt-get install -y \
-  build-essential libffi-dev libssl-dev python python-dev
-curl -sSL https://bootstrap.pypa.io/get-pip.py | python
-pip install docker-compose=="${DOCKER_COMPOSE_VERSION}"
-apt-get purge -y \
-  build-essential libffi-dev libssl-dev python-dev
-apt-get autoremove -y --purge
-apt-get autoclean
-apt-get clean
-
-# install bash completion for Docker Compose
-curl -sSL "https://raw.githubusercontent.com/docker/compose/${DOCKER_COMPOSE_VERSION}/contrib/completion/bash/docker-compose" -o /etc/bash_completion.d/docker-compose
-
-# # set up Docker APT repository and install docker-engine package
-# #TODO: pin package version to ${DOCKER_ENGINE_VERSION}
-# curl -sSL https://get.docker.com | /bin/sh
-
-# enable Docker Engine experimental features
-mkdir -p /etc/docker/
-echo '{
-  "experimental": true
-}
-' > /etc/docker/daemon.json
-
-#TODO:+++ change to Debian Stretch official repo, as soon as it's available
-# install Docker CE directly from Docker APT Repo but built for Debian Stretch ARM64
-DOCKER_DEB="docker-ce_${DOCKER_ENGINE_VERSION}-0~debian_arm64.deb"
-curl -sSL "https://download.docker.com/linux/debian/dists/stretch/pool/edge/arm64/$DOCKER_DEB" \
-  > "/$DOCKER_DEB"
-if [ -f "/$DOCKER_DEB" ]; then
-  # install some runtime requirements for Docker CE
-  apt-get install -y libapparmor1 libltdl7 libseccomp2
-
-  # install Docker CE
-  dpkg -i "/$DOCKER_DEB" || /bin/true
-  rm -f "/$DOCKER_DEB"
-
-  # fix missing apt-get install dependencies
-  apt-get -f install -y
-fi
-#TODO:---
+#---DISABLE DOCKER COMPOSE---
+# # install Docker Compose via pip
+# apt-get install -y \
+#   build-essential libffi-dev libssl-dev python python-dev
+# curl -sSL https://bootstrap.pypa.io/get-pip.py | python
+# pip install docker-compose=="${DOCKER_COMPOSE_VERSION}"
+# apt-get purge -y \
+#   build-essential libffi-dev libssl-dev python-dev
+# apt-get autoremove -y --purge
+# apt-get autoclean
+# apt-get clean
+#
+# # install bash completion for Docker Compose
+# curl -sSL "https://raw.githubusercontent.com/docker/compose/${DOCKER_COMPOSE_VERSION}/contrib/completion/bash/docker-compose" -o /etc/bash_completion.d/docker-compose
+#---DISABLE DOCKER COMPOSE---
 
 echo "Installing rpi-serial-console script"
 wget -q https://raw.githubusercontent.com/lurch/rpi-serial-console/master/rpi-serial-console -O usr/local/bin/rpi-serial-console
