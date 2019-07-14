@@ -256,21 +256,14 @@ chmod +x /usr/local/bin/docker-machine
 # install bash completion for Docker Machine
 curl -sSL "https://raw.githubusercontent.com/docker/machine/v${DOCKER_MACHINE_VERSION}/contrib/completion/bash/docker-machine.bash" -o /etc/bash_completion.d/docker-machine
 
-#---DISABLE DOCKER COMPOSE---
-# # install Docker Compose via pip
-# apt-get install -y \
-#   build-essential libffi-dev libssl-dev python python-dev
-# curl -sSL https://bootstrap.pypa.io/get-pip.py | python
-# pip install docker-compose=="${DOCKER_COMPOSE_VERSION}"
-# apt-get purge -y \
-#   build-essential libffi-dev libssl-dev python-dev
-# apt-get autoremove -y --purge
-# apt-get autoclean
-# apt-get clean
-#
-# # install bash completion for Docker Compose
-# curl -sSL "https://raw.githubusercontent.com/docker/compose/${DOCKER_COMPOSE_VERSION}/contrib/completion/bash/docker-compose" -o /etc/bash_completion.d/docker-compose
-#---DISABLE DOCKER COMPOSE---
+# install Docker Compose via pip
+apt-get install -y \
+  python
+curl -sSL https://bootstrap.pypa.io/get-pip.py | python
+pip install docker-compose=="${DOCKER_COMPOSE_VERSION}"
+
+# install bash completion for Docker Compose
+curl -sSL "https://raw.githubusercontent.com/docker/compose/${DOCKER_COMPOSE_VERSION}/contrib/completion/bash/docker-compose" -o /etc/bash_completion.d/docker-compose
 
 echo "Installing rpi-serial-console script"
 wget -q https://raw.githubusercontent.com/lurch/rpi-serial-console/master/rpi-serial-console -O usr/local/bin/rpi-serial-console
