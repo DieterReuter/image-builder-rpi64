@@ -6,7 +6,21 @@ end
 
 describe command('dpkg -l docker-ce') do
   its(:stdout) { should match /ii  docker-ce/ }
-  its(:stdout) { should match /18.04.0~ce~3-0~debian/ }
+  its(:stdout) { should match /5:18.09.7~3-0~debian/ }
+  its(:stdout) { should match /arm64/ }
+  its(:exit_status) { should eq 0 }
+end
+
+describe command('dpkg -l docker-ce-cli') do
+  its(:stdout) { should match /ii  docker-ce-cli/ }
+  its(:stdout) { should match /5:18.09.7~3-0~debian/ }
+  its(:stdout) { should match /arm64/ }
+  its(:exit_status) { should eq 0 }
+end
+
+describe command('dpkg -l containerd.io') do
+  its(:stdout) { should match /ii  containerd.io/ }
+  its(:stdout) { should match /1.2.6-3/ }
   its(:stdout) { should match /arm64/ }
   its(:exit_status) { should eq 0 }
 end
@@ -17,25 +31,36 @@ describe file('/usr/bin/docker') do
   it { should be_owned_by 'root' }
 end
 
-describe file('/usr/bin/docker-containerd') do
+describe file('/usr/bin/docker-init') do
   it { should be_file }
   it { should be_mode 755 }
   it { should be_owned_by 'root' }
 end
 
-describe file('/usr/bin/docker-containerd-ctr') do
+describe file('/usr/bin/docker-proxy') do
   it { should be_file }
   it { should be_mode 755 }
   it { should be_owned_by 'root' }
 end
 
-describe file('/usr/bin/docker-containerd-shim') do
+describe file('/usr/bin/dockerd') do
+  it { should be_file }
+  it { should be_owned_by 'root' }
+end
+
+describe file('/usr/bin/dockerd-ce') do
   it { should be_file }
   it { should be_mode 755 }
   it { should be_owned_by 'root' }
 end
 
-describe file('/usr/bin/docker-runc') do
+describe file('/usr/bin/containerd') do
+  it { should be_file }
+  it { should be_mode 755 }
+  it { should be_owned_by 'root' }
+end
+
+describe file('/usr/bin/containerd-shim') do
   it { should be_file }
   it { should be_mode 755 }
   it { should be_owned_by 'root' }
@@ -73,7 +98,7 @@ describe file('/var/lib/docker/overlay2') do
 end
 
 describe command('docker -v') do
-  its(:stdout) { should match /Docker version 18.04.0-ce, build/ }
+  its(:stdout) { should match /Docker version 18.09.7, build/ }
   its(:exit_status) { should eq 0 }
 end
 
