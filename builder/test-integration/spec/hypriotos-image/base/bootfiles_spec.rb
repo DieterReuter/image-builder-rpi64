@@ -36,6 +36,12 @@ describe file('/boot/kernel8.img') do
   it { should be_owned_by 'root' }
 end
 
+describe file('/boot/COPYING.linux') do
+  it { should be_file }
+  it { should be_mode 755 }
+  it { should be_owned_by 'root' }
+end
+
 describe file('/boot/LICENCE.broadcom') do
   it { should be_file }
   it { should be_mode 755 }
