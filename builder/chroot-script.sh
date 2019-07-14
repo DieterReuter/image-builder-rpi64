@@ -183,10 +183,12 @@ ln -s /sbin/resizefs /sbin/init
 
 # as the Pi does not have a hardware clock we need a fake one
 apt-get install -y \
+  --no-install-recommends \
   fake-hwclock
 
 # install packages for managing wireless interfaces
 apt-get install -y \
+  --no-install-recommends \
   wpasupplicant \
   wireless-tools \
   ethtool \
@@ -203,10 +205,12 @@ apt-get install -y \
 
 # ensure compatibility with Docker install.sh, so `raspbian` will be detected correctly
 apt-get install -y \
+  --no-install-recommends \
   lsb-release
 
 # install cloud-init and its required dependencies
 apt-get install -y \
+  --no-install-recommends \
   cloud-init \
   dirmngr \
   less
@@ -227,6 +231,7 @@ echo '{
 #
 # Install packages to allow apt to use a repository over HTTPS:
 apt-get install -y \
+  --no-install-recommends \
   apt-transport-https \
   ca-certificates \
   curl \
@@ -244,6 +249,7 @@ add-apt-repository \
 # Install Docker CE
 apt-get update
 apt-get install -y \
+  --no-install-recommends \
   docker-ce="${DOCKER_ENGINE_VERSION}" \
   docker-ce-cli="${DOCKER_ENGINE_VERSION}" \
   containerd.io="${CONTAINERD_IO_VERSION}"
@@ -258,6 +264,7 @@ curl -sSL "https://raw.githubusercontent.com/docker/machine/v${DOCKER_MACHINE_VE
 
 # install Docker Compose via pip
 apt-get install -y \
+  --no-install-recommends \
   python
 curl -sSL https://bootstrap.pypa.io/get-pip.py | python
 pip install docker-compose=="${DOCKER_COMPOSE_VERSION}"
