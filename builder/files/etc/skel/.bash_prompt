@@ -1,0 +1,102 @@
+# @gf3’s Sexy Bash Prompt, inspired by “Extravagant Zsh Prompt”
+# Shamelessly copied from https://github.com/gf3/dotfiles
+
+default_username='unknown'
+OSNAME="HypriotOS: "
+OSTYPE="Embedded"
+PROMPTCHAR='\$'
+
+# determine OS type
+if [ "$(uname -s)" = Darwin ]; then
+  OSNAME="OSX: "
+  OSTYPE="Desktop"
+  #PROMPTCHAR="🐳 "
+elif [ "$(cat /etc/os-release | grep ^NAME= | cut -d\" -f2)" = Ubuntu ]; then
+  OSNAME="Ubuntu: "
+  OSTYPE="Desktop"
+  #PROMPTCHAR="🐳 "
+elif [ "$(uname -m)" = armv6l ]; then
+  OSNAME="HypriotOS/armv6: "
+elif [ "$(uname -m)" = armv7l ]; then
+  OSNAME="HypriotOS/armv7: "
+elif [ "$(uname -m)" = aarch64 ]; then
+  OSNAME="HypriotOS/arm64: "
+else
+  OSNAME="HypriotOS: "
+fi
+
+if [[ $COLORTERM = gnome-* && $TERM = xterm ]] && infocmp gnome-256color >/dev/null 2>&1; then
+  export TERM=gnome-256color
+elif infocmp xterm-256color >/dev/null 2>&1; then
+  export TERM=xterm-256color
+fi
+
+if tput setaf 1 &> /dev/null; then
+  tput sgr0
+  if [[ $(tput colors) -ge 256 ]] 2>/dev/null; then
+    BLUE=$(tput setaf 4)
+    MAGENTA=$(tput setaf 9)
+    ORANGE=$(tput setaf 172)
+    GREEN=$(tput setaf 70)
+    PURPLE=$(tput setaf 141)
+  else
+    BLUE=$(tput setaf 4)
+    MAGENTA=$(tput setaf 5)
+    ORANGE=$(tput setaf 3)
+    GREEN=$(tput setaf 2)
+    PURPLE=$(tput setaf 1)
+
+  fi
+  BOLD=$(tput bold)
+  RESET=$(tput sgr0)
+  else
+    BLUE="\033[1;34m"
+    MAGENTA="\033[1;31m"
+    ORANGE="\033[1;33m"
+    GREEN="\033[1;32m"
+    PURPLE="\033[1;35m"
+    BOLD=""
+    RESET="\033[m"
+  fi
+
+
+function git_info() {
+  # check if we're in a git repo
+  git rev-parse --is-inside-work-tree &>/dev/null || return
+
+  # quickest check for what branch we're on
+  branch=$(git symbolic-ref -q HEAD | sed -e 's|^refs/heads/||')
+
+  # check if it's dirty (via github.com/sindresorhus/pure)
+  dirty=$(test -z "$(git status --porcelain)" || echo -e "*")
+
+  echo "$RESET$BOLD on $PURPLE$branch$dirty"
+}
+
+# Only show username/host if not default
+function usernamehost() {
+  if [ "$USER" != $default_username ]; then
+    echo "${BLUE}${OSNAME}${MAGENTA}$USER${RESET}${BOLD}@${ORANGE}$HOSTNAME${RESET}${BOLD} in ";
+  else
+    echo "${BLUE}${OSNAME}";
+  fi
+}
+
+# iTerm Tab and Title Customization and prompt customization
+# http://sage.ucsc.edu/xtal/iterm_tab_customization.html
+
+# Put the string " [bash]   hostname::/full/directory/path"
+# in the title bar using the command sequence
+# \[\e]2;[bash]   \h::\]$PWD\[\a\]
+
+# Put the penultimate and current directory
+# in the iterm tab
+# \[\e]1;\]$(basename $(dirname $PWD))/\W\[\a\]
+
+
+# show git info only on macOS/Ubuntu Desktop systems, don't slow down on ARM/Embedded devices
+if [ "$OSTYPE" = "Desktop" ]; then
+  PS1="\[\e]2;$PWD\[\a\]\[\e]1;\]$(basename "$(dirname "$PWD")")/\W\[\a\]${BOLD}$(usernamehost)\[$GREEN\]\w\$(git_info)\[$RESET\]\[$BOLD\]\n${PROMPTCHAR} \[$RESET\]"
+else
+  PS1="\[\e]2;$PWD\[\a\]\[\e]1;\]$(basename "$(dirname "$PWD")")/\W\[\a\]${BOLD}$(usernamehost)\[$GREEN\]\w\[$RESET\]\[$BOLD\]\n${PROMPTCHAR} \[$RESET\]"
+fi
