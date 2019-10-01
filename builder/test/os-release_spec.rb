@@ -11,7 +11,7 @@ describe "Root filesystem" do
     expect(stdout).to contain('buster')
   end
 
-  it "is a Hypriot" do
+  it "is a HypriotOS" do
     expect(stdout).to contain('HypriotOS')
   end
 
