@@ -12,10 +12,10 @@ if [ -z "$GITHUB_TOKEN" ]; then
   echo "ABORTING: env GITHUB_TOKEN is missing"
   exit 1
 fi
-#if [ -z "$GITHUB_OAUTH_TOKEN" ]; then
-#  echo "ABORTING: env GITHUB_OAUTH_TOKEN is missing"
-#  exit 1
-#fi
+if [ -z "$GITHUB_OAUTH_TOKEN" ]; then
+  echo "ABORTING: env GITHUB_OAUTH_TOKEN is missing"
+  exit 1
+fi
 
 # verbose logging
 set -x
