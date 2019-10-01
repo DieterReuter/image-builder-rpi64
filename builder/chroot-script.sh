@@ -86,7 +86,7 @@ function get_gpg(){
 # get_gpg {GPGKEYID|FINGERPRINT} [URL|FILE]
 
 # device specific settings
-HYPRIOT_DEVICE="Raspberry Pi 3 64bit"
+HYPRIOT_DEVICE="Raspberry Pi 3/4 64bit"
 
 # set up /etc/resolv.conf
 DEST=$(readlink -m /etc/resolv.conf)
@@ -164,6 +164,17 @@ hdmi_force_hotplug=1
 echo "# setting for maximum memory, gpu_mem to minimum 16M, camera off
 start_x=0
 gpu_mem=16
+" >> boot/config.txt
+
+# Add option for custom 64-bit kernel to boot/config.txt
+echo "
+[pi4]
+# Enable DRM VC4 V3D driver on top of the dispmanx display stack
+dtoverlay=vc4-fkms-v3d
+max_framebuffers=2
+arm_64bit=1
+# differentiate from Pi3 64-bit kernels
+kernel=kernel8-p4.img
 " >> boot/config.txt
 
 # # /etc/modules
@@ -288,6 +299,8 @@ HYPRIOT_KERNEL_BUILD="${KERNEL_BUILD}"
 HYPRIOT_KERNEL_VERSION="${KERNEL_VERSION}"
 HYPRIOT_DEVICE="$HYPRIOT_DEVICE"
 HYPRIOT_IMAGE_VERSION="$HYPRIOT_IMAGE_VERSION"
+HYPRIOT_OS_VERSION="$HYPRIOT_OS_VERSION"
+HYPRIOT_OS="HypriotOS/arm64"
 EOF
 else
 cat <<EOF >> /etc/os-release

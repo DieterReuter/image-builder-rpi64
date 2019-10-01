@@ -7,8 +7,8 @@ describe "Root filesystem" do
     expect(stdout).to contain('debian')
   end
 
-  it "is debian version stretch" do
-    expect(stdout).to contain('stretch')
+  it "is debian version buster" do
+    expect(stdout).to contain('buster')
   end
 
   it "is a HypriotOS" do
@@ -32,12 +32,12 @@ describe "Root filesystem" do
     expect(stdout).to contain('^HYPRIOT_OS="HypriotOS/arm64"$')
   end
 
-  it "is for device 'HYPRIOT_DEVICE=\"Raspberry Pi 3 64bit\"'" do
-    expect(stdout).to contain('^HYPRIOT_DEVICE="Raspberry Pi 3 64bit"$')
+  it "is for device 'HYPRIOT_DEVICE=\"Raspberry Pi 3/4 64bit\"'" do
+    expect(stdout).to contain('^HYPRIOT_DEVICE="Raspberry Pi 3/4 64bit"$')
   end
 
-  it "uses os-rootfs version 'HYPRIOT_OS_VERSION=\"v2.1.0\"'" do
-    expect(stdout).to contain('^HYPRIOT_OS_VERSION="v2.1.0"$')
+  it "uses os-rootfs version 'HYPRIOT_OS_VERSION=\"v2.2.1\"'" do
+    expect(stdout).to contain('^HYPRIOT_OS_VERSION="v2.2.1"$')
   end
 
   if ENV.fetch('TRAVIS_TAG','') != ''
