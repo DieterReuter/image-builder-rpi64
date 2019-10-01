@@ -79,7 +79,7 @@ tar -xf "$FILENAME" -C "${BUILD_PATH}"
 FILENAME=/workspace/$RPI4_KERNEL_ARTIFACT
 if [ ! -f "$FILENAME" ]; then
   if [ "$FETCH_MISSING_ARTIFACTS" == "true" ]; then
-    fetch --repo="https://github.com/sakaki-/bcm2711-kernel-bis" --tag="$RPI4_KERNEL_BUILD" --release-asset="${RPI_KERNEL_ARTIFACT}" /workspace
+    fetch --repo="https://github.com/sakaki-/bcm2711-kernel-bis" --tag="$RPI4_KERNEL_BUILD" --release-asset="${RPI4_KERNEL_ARTIFACT}" /workspace
   else
     echo "Missing artifact ${KERNEL_ARTIFACT}"
     exit 255
