@@ -26,7 +26,7 @@ HYPRIOT_IMAGE_NAME="hypriotos-rpi64-${HYPRIOT_IMAGE_VERSION}.img"
 export HYPRIOT_IMAGE_VERSION
 
 # Add RPI Kernel
-RPI4_KERNEL_ARTIFACT=${RPI4_KERNEL_ARTIFACT}${RPI4_KERNEL_BUILD}.tar.xz
+RPI4_KERNEL_ARTIFACT=${RPI4_KERNEL_ARTIFACT}-${RPI4_KERNEL_BUILD}.tar.xz
 
 # create build directory for assembling our image filesystem
 rm -rf ${BUILD_PATH}
@@ -79,7 +79,7 @@ tar -xf "$FILENAME" -C "${BUILD_PATH}"
 FILENAME=/workspace/$RPI4_KERNEL_ARTIFACT
 if [ ! -f "$FILENAME" ]; then
   if [ "$FETCH_MISSING_ARTIFACTS" == "true" ]; then
-    fetch --repo="https://github.com/sakaki-/bcm2711-kernel-bis" --tag="$RPI4_KERNEL_BUILD" --release-asset="${RPI$_KERNEL_ARTIFACT}-${RPI4_KERNEL_VERSION}.tar.xz" /workspace
+    fetch --repo="https://github.com/sakaki-/bcm2711-kernel-bis" --tag="$RPI4_KERNEL_BUILD" --release-asset="${RPI$_KERNEL_ARTIFACT}" /workspace
   else
     echo "Missing artifact ${KERNEL_ARTIFACT}"
     exit 255
