@@ -1,4 +1,5 @@
 # image-builder-rpi64
+[![CircleCI](https://circleci.com/gh/DieterReuter/image-builder-rpi64.svg?style=svg)](https://circleci.com/gh/DieterReuter/image-builder-rpi64) 
 [![Build Status](https://travis-ci.org/DieterReuter/image-builder-rpi64.svg?branch=master)](https://travis-ci.org/DieterReuter/image-builder-rpi64)
 
 **Warning:** This SD image will not work on a Raspberry Pi 4B !!! 
