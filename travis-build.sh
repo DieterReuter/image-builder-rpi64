@@ -43,4 +43,4 @@ export GIT_RELTEXT="Auto-released by [Travis-CI build #$TRAVIS_BUILD_NUMBER](htt
 curl -sSL https://github.com/tcnksm/ghr/releases/download/v0.5.4/ghr_v0.5.4_linux_amd64.zip > ghr.zip
 unzip ghr.zip
 ./ghr --version
-./ghr --debug -u lucashalbert -b "$GIT_RELTEXT" $GIT_TAG builds/$BUILD_NR/
+./ghr --debug -u DieterReuter -b "$GIT_RELTEXT" $GIT_TAG builds/$BUILD_NR/
