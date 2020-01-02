@@ -1,9 +1,7 @@
 # image-builder-rpi64
 [![Build Status](https://travis-ci.org/DieterReuter/image-builder-rpi64.svg?branch=master)](https://travis-ci.org/DieterReuter/image-builder-rpi64)
 
-**Warning:** This SD image will not work on a Raspberry Pi 4B !!! 
-
-This repo builds the SD card image with HypriotOS for the Raspberry Pi 3 in 64bit.
+This repo builds the SD card image with HypriotOS for the Raspberry Pi 3/4 in 64bit.
 You can find released versions of the SD card image here in the GitHub
 releases page. To build this SD card image we have to
 
