@@ -25,6 +25,9 @@ HYPRIOT_IMAGE_VERSION=${VERSION:="dirty"}
 HYPRIOT_IMAGE_NAME="hypriotos-rpi64-${HYPRIOT_IMAGE_VERSION}.img"
 export HYPRIOT_IMAGE_VERSION
 
+# Add RPI Kernel
+RPI4_KERNEL_ARTIFACT=${RPI4_KERNEL_ARTIFACT}-${RPI4_KERNEL_BUILD}.tar.xz
+
 # create build directory for assembling our image filesystem
 rm -rf ${BUILD_PATH}
 mkdir ${BUILD_PATH}
@@ -71,6 +74,18 @@ if [ ! -f "$FILENAME" ]; then
   fi
 fi
 tar -xf "$FILENAME" -C "${BUILD_PATH}"
+
+# Add RPI4 Kernel
+FILENAME=/workspace/$RPI4_KERNEL_ARTIFACT
+if [ ! -f "$FILENAME" ]; then
+  if [ "$FETCH_MISSING_ARTIFACTS" == "true" ]; then
+    fetch --repo="https://github.com/sakaki-/bcm2711-kernel-bis" --tag="$RPI4_KERNEL_BUILD" --release-asset="${RPI4_KERNEL_ARTIFACT}" /workspace
+  else
+    echo "Missing artifact ${KERNEL_ARTIFACT}"
+    exit 255
+  fi
+fi
+tar -xJf "$FILENAME" -C "${BUILD_PATH}"
 
 # register qemu-aarch64 with binfmt
 # to ensure that binaries we use in the chroot
